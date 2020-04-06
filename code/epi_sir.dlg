@@ -1,0 +1,83 @@
+VERSION 14.0
+
+POSITION . . 410 250
+
+DIALOG params, label("sir - SIR model") tabtitle("Model parameters")
+BEGIN
+		   
+  TEXT     tx_beta      10  10  390  ., label("Beta:")		   
+  EDIT     ed_beta     @       +20     @       .,              ///
+        numonly option(beta) default(0.33333) ///
+		tooltip("The parameter controlling how often a susceptible-infected contact results in a new exposure.")
+
+  TEXT     tx_gamma      10  +25  390  ., label("Gamma:")		   
+  EDIT     ed_gamma     @       +20     @       .,              ///
+        numonly option(gamma) default(0.50) ///
+		tooltip("The rate an infected recovers and moves into the recovered phase.")
+		
+		
+END
+
+OK ok1,      label("OK")
+CANCEL can1, label("Cancel")
+SUBMIT sub1, label("Submit")
+HELP hlp1,   view("help seir")
+RESET res1
+COPY copy1
+
+
+DIALOG inicond, tabtitle("Initial conditions")
+BEGIN
+  TEXT     tx_susceptible      10  10  390  ., label("Susceptible:")		   
+  EDIT     ed_susceptible     @       +20     @       .,              ///
+        numonly option(susceptible) default(1.00) ///
+		tooltip("The number of susceptible individuals at the beginning of the model run.")
+
+  TEXT     tx_infected      10  +25  390  ., label("Infected:")		   
+  EDIT     ed_infected     @       +20     @       .,              ///
+        numonly option(infected) default(1.27e-06)		///
+		tooltip("The number of infected individuals at the beginning of the model run.")
+
+  TEXT     tx_recovered      10  +25  390  ., label("Recovered:")		   
+  EDIT     ed_recovered     @       +20     @       .,              ///
+        numonly option(recovered) default(0.00)		///
+		tooltip("The number of recovered individuals at the beginning of the model run.")
+END
+
+DIALOG calc, tabtitle("Calculation")
+BEGIN
+  TEXT  tx_iter      10  10  390  ., label("Days:")		   
+  SPINNER sp_days     @       +20     @       .,              ///
+        min(1) max(365) option(days) default(150) ///
+		tooltip("Number of days")
+		
+  TEXT  tx_day0      10  +20  @  ., label("Day zero (t0) in YYYY-MM-DD format:")
+  EDIT  ed_day0     @       +20     @       .,              ///
+        option(day0) default("")		///
+		tooltip("Date corresponding to day zero of the simulation (date of t0).")
+		
+CHECKBOX ck_nogr      @       +30     @       .,              ///
+        label("Suppress graph")                      ///
+        option(nograph) 
+
+END
+
+
+PROGRAM command
+BEGIN
+    put "epi_sir "
+	beginoptions
+	   optionarg params.ed_beta
+	   optionarg params.ed_gamma
+	   
+	   optionarg inicond.ed_susceptible
+	   optionarg inicond.ed_infected
+	   optionarg inicond.ed_recovered
+	   
+	   optionarg calc.sp_days
+	   optionarg calc.ed_day0
+	   option calc.ck_nogr
+	endoptions
+END
+
+// END OF FILE

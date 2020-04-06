@@ -26,9 +26,9 @@
 {synopt :{opt gamma(#)}}The model parameter controlling how often an infected individual recovers{p_end}
 
 {syntab :Initial conditions}
-{synopt :{opt ini_susceptible(#)}}Number of susceptible individuals at t0{p_end}
-{synopt :{opt ini_infected(#)}}Number of infected individuals at t0{p_end}
-{synopt :{opt ini_recovered(#)}}Number of recovered individuals at t0{p_end}
+{synopt :{opt susceptible(#)}}Number of susceptible individuals at t0{p_end}
+{synopt :{opt infected(#)}}Number of infected individuals at t0{p_end}
+{synopt :{opt recovered(#)}}Number of recovered individuals at t0{p_end}
 
 {syntab :Other options}
 {synopt :{opt days(#)}}Number of days for advancing the simulations{p_end}
@@ -55,16 +55,16 @@ The initial conditions may be specified in absolute numbers, as shares, or expre
 
     {hline}
 {pstd}Simulation{p_end}
-{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) ini_susceptible(10) ini_infected(1) }{p_end}
+{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) infected(1) }{p_end}
 
 {pstd}Perform SIR model simulation for a population of 10 susceptible and 1 infected individuals, with infection rate 0.3 and recovery rate 0.9 over 150 days, and 
 display graph{p_end}
 
-{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) ini_susceptible(10) ini_infected(1) ini_recovered(2) clear}{p_end}
+{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) infected(1) recovered(2) clear}{p_end}
 
 {pstd}Same as above, but start also with 2 recovered individuals, and clear the data in memory (if any).{p_end}
 
-{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) ini_susceptible(10) ini_infected(1) ini_recovered(2) clear nograph}{p_end}
+{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) infected(1) recovered(2) clear nograph}{p_end}
 {pstd}Same as above, but without plotting any graph.{p_end}
 
 {title:References}

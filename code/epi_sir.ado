@@ -3,9 +3,9 @@ program define _epi_sirm, rclass
 	  days(real) ///
 	  beta(real) ///
 	  gamma(real) ///
-	  ini_susceptible(real) ///
-	  ini_infected(real) ///
-	  ini_recovered(real)
+	  susceptible(real) ///
+	  infected(real) ///
+	  recovered(real)
 
 	tempname M
 	matrix `M' = J(`days',4,.)
@@ -18,9 +18,9 @@ program define _epi_sirm, rclass
 	local vr = strpos(`"`ordervars'"',"R")
 	
 	matrix `M'[1,`vt'] = 0 // day zero
-	matrix `M'[1,`vs'] = `ini_susceptible'
-	matrix `M'[1,`vi'] = `ini_infected'
-	matrix `M'[1,`vr'] = `ini_recovered'
+	matrix `M'[1,`vs'] = `susceptible'
+	matrix `M'[1,`vi'] = `infected'
+	matrix `M'[1,`vr'] = `recovered'
 	
 	forval iter=2(1)`days' {
 	    matrix `M'[`iter',`vt']=`M'[`iter'-1,`vt'] + 1
@@ -42,9 +42,9 @@ program define epi_sir, rclass
 	  days(real) [day0(string)] ///
 	  beta(real) ///
 	  gamma(real) ///
-	  [ini_susceptible(real 0.00) ///
-	  ini_infected(real 0.00) ///
-	  ini_recovered(real 0.00) ///
+	  [susceptible(real 0.00) ///
+	  infected(real 0.00) ///
+	  recovered(real 0.00) ///
 	  nograph clear * ]
 	
 	assert `days'>1
@@ -56,9 +56,9 @@ program define epi_sir, rclass
 	  days(`days')  ///
 	  beta(`beta') ///
 	  gamma(`gamma') ///
-	  ini_susceptible(`ini_susceptible') ///
-	  ini_infected(`ini_infected') ///
-	  ini_recovered(`ini_recovered')
+	  susceptible(`susceptible') ///
+	  infected(`infected') ///
+	  recovered(`recovered')
 	
 	matrix `M' = r(sir)
 	
