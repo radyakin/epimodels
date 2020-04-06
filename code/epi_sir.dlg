@@ -1,4 +1,4 @@
-VERSION 14.0
+VERSION 16.0
 
 POSITION . . 410 250
 
@@ -7,12 +7,12 @@ BEGIN
 		   
   TEXT     tx_beta      10  10  390  ., label("Beta:")		   
   EDIT     ed_beta     @       +20     @       .,              ///
-        numonly option(beta) default(0.33333) ///
+        numonly option(beta) default(0.50) ///
 		tooltip("The parameter controlling how often a susceptible-infected contact results in a new exposure.")
 
   TEXT     tx_gamma      10  +25  390  ., label("Gamma:")		   
   EDIT     ed_gamma     @       +20     @       .,              ///
-        numonly option(gamma) default(0.50) ///
+        numonly option(gamma) default(0.33333) ///
 		tooltip("The rate an infected recovers and moves into the recovered phase.")
 		
 		
