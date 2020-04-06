@@ -1,51 +1,76 @@
 \documentclass{article}
-
+\usepackage {tikz}
+\usetikzlibrary {positioning}
+\setlength{\parskip}{\baselineskip}%
+\definecolor {processblue}{cmyk}{0.96,0,0,0}
    \title{EPIMODELS}
-\author{Sergiy Radyakin, Development Economics Data Group, The World Bank}
+
+\author{
+\textit{Sergiy Radyakin}, Development Economics Data Group, The World Bank \\
+\textit{Paolo Verme}, Fragility, Conflict and Violence, The World Bank }
 
 \begin{document}
-
 \maketitle
-
-
 \section{SEIR model}
+\begin {center}
+	\begin {tikzpicture}[-latex ,auto ,node distance =5 cm and 4cm ,on grid , semithick ,
+	state/.style ={ circle ,top color =white , bottom color = processblue!20 ,
+	draw,processblue , text=blue , minimum width =1 cm}]
+		\node[state] (S){$S$};
+		\node[state] (E) [right=of S] {$E$};
+		\node[state] (I) [right =of E] {$I$};
+		\node[state] (R) [right =of I] {$R$};
+		\path (S) edge [ left =25] node[above]  {$\beta$} (E);
+		\path (E) edge [ left =25] node[above]  {$\sigma$} (I);
+		\path (I) edge [ left =25] node[above]  {$\gamma$} (R);
+		\path (S) edge [bend left =35] node[above]  {$\nu$} (R);
+		\path (E) edge [bend left =25] node[above]  {$\mu$} (S);
+		\path (I) edge [bend left =35] node[above]  {$\mu$} (S);
+		\path (R) edge [bend left =45] node[above]  {$\mu$} (S);
+	\end{tikzpicture}
+\end{center}
+Consider the model defined by the following system of ordinary differential equations: \par
+   $ \frac{dS}{dt}=\mu(N-S)-\beta\frac{SI}{N}-\nu S$ , $S(t_0)=S_0$ \par
+   $ \frac{dE}{dt}=\beta\frac{SI}{N}-(\mu+\sigma)E$ , $E(t_0)=E_0$ \par
+   $ \frac{dI}{dt}=\sigma E  -(\mu + \gamma)I $ , $I(t_0)=I_0$ \par
+   $ \frac{dR}{dt}= \gamma I - \mu R + \nu S $ , $R(t_0)=R_0$ \par
 
-Consider the model defined by the following system of ordinary differential equations:
-\vskip10pt
-   $ \frac{dS}{dt}=\mu(N-S)-\beta\frac{SI}{N}-\nu S$ , $S(t_0)=S_0$
-\vskip10pt
-   $ \frac{dE}{dt}=\beta\frac{SI}{N}-(\mu+\sigma)E$ , $E(t_0)=E_0$
-\vskip10pt
-   $ \frac{dI}{dt}=\sigma E  -(\mu + \gamma)I $ , $I(t_0)=I_0$
-\vskip10pt
-   $ \frac{dR}{dt}= \gamma I - \mu R + \nu S $ , $R(t_0)=R_0$
-\vskip10pt
-
-The parameter $\beta$ characterizes the speed of  
-
-The model is formulated under the constant population assumption, so that the mortality ($\mu$) unrelated to the modelled disease is compensated by the equivalent fertility, refreshing the susceptible population. \par
+The parameter $\beta$ characterizes the speed of contagion, at which susceptible individuals become exposed. The parameter $\sigma$ is the constant rate at which exposed individuals become infected. The parameter $\gamma$ is a constant rate at which infected individuals recover. The parameter $\mu$ is the constant natural mortality rate unrelated to the disease being modelled. The model is formulated under the constant population assumption ($S+E+I+R=N=Population$), so that the natural mortality ($\mu$) is counterbalanced by the equivalent fertility, refreshing the susceptible population. \par
 
 The vaccination rate ($\nu$) is transferring individuals from susceptible state to recovered (assuming resistance to the disease).\par
 
 We can simplify the model by assuming away these two effects (letting both $\mu$ and $\nu$ equal to zero). Under this assumption the model becomes:
 \vskip10pt
-   $ \frac{dS}{dt}=-\beta\frac{SI}{N}$ , $S(t_0)=S_0$
-\vskip10pt
-   $ \frac{dE}{dt}=\beta\frac{SI}{N}-\sigma E$ , $E(t_0)=E_0$
-\vskip10pt
-   $ \frac{dI}{dt}=\sigma E  -\gamma I $ , $I(t_0)=I_0$
-\vskip10pt
-   $ \frac{dR}{dt}= \gamma I $ , $R(t_0)=R_0$
-\vskip10pt
+   $ \frac{dS}{dt}=-\beta\frac{SI}{N}$ , $S(t_0)=S_0$ \par
+   $ \frac{dE}{dt}=\beta\frac{SI}{N}-\sigma E$ , $E(t_0)=E_0$ \par
+   $ \frac{dI}{dt}=\sigma E  -\gamma I $ , $I(t_0)=I_0$ \par
+   $ \frac{dR}{dt}= \gamma I $ , $R(t_0)=R_0$ \par
 
-Note that this becomes a SIR model if we further assume parameter $\sigma$ to be equal to zero and combine the exposed and infected states together:
+Note that this effectively becomes a SIR model if we further assume parameter $\sigma$ to be equal to zero and combine the exposed and infected states together:
 \vskip10pt
-   $ \frac{dS}{dt}=-\beta\frac{SI}{N}$ , $S(t_0)=S_0$
-\vskip10pt
-   $ \frac{dI}{dt}=\beta\frac{SI}{N}  -\gamma I $ , $I(t_0)=I_0$
-\vskip10pt
-   $ \frac{dR}{dt}= \gamma I $ , $R(t_0)=R_0$
-\vskip10pt
+   $ \frac{dS}{dt}=-\beta\frac{SI}{N}$ , $S(t_0)=S_0$ \par
+   $ \frac{dI}{dt}=\beta\frac{SI}{N}  -\gamma I $ , $I(t_0)=I_0$ \par
+   $ \frac{dR}{dt}= \gamma I $ , $R(t_0)=R_0$ \par
+
+
+\section{SIR model}
+
+\begin {center}
+	\begin {tikzpicture}[-latex ,auto ,node distance =3 cm and 3cm ,on grid , semithick ,
+	state/.style ={ circle ,top color =white , bottom color = processblue!20 ,
+	draw,processblue , text=blue , minimum width =1 cm}]
+		\node[state] (S){$S$};
+		\node[state] (I) [right =of S] {$I$};
+		\node[state] (R) [right =of I] {$R$};
+		\path (S) edge [ left =25] node[above]  {$\beta$} (I);
+		\path (I) edge [ left =25] node[above]  {$\gamma$} (R);
+	\end{tikzpicture}
+\end{center}
+The SIR model is also formulated under the constant population assumption $Population=N=S+I+R$ and is characterized by the following system of differential equations:
+
+   $ \frac{dS}{dt}=-\beta\frac{SI}{N}$ , $S(t_0)=S_0$ \par
+   $ \frac{dI}{dt}=\beta\frac{SI}{N}  -\gamma I $ , $I(t_0)=I_0$ \par
+   $ \frac{dR}{dt}= \gamma I $ , $R(t_0)=R_0$ \par
 
 
 \end{document}
