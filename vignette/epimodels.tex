@@ -1,0 +1,51 @@
+\documentclass{article}
+
+   \title{EPIMODELS}
+\author{Sergiy Radyakin, Development Economics Data Group, The World Bank}
+
+\begin{document}
+
+\maketitle
+
+
+\section{SEIR model}
+
+Consider the model defined by the following system of ordinary differential equations:
+\vskip10pt
+   $ \frac{dS}{dt}=\mu(N-S)-\beta\frac{SI}{N}-\nu S$ , $S(t_0)=S_0$
+\vskip10pt
+   $ \frac{dE}{dt}=\beta\frac{SI}{N}-(\mu+\sigma)E$ , $E(t_0)=E_0$
+\vskip10pt
+   $ \frac{dI}{dt}=\sigma E  -(\mu + \gamma)I $ , $I(t_0)=I_0$
+\vskip10pt
+   $ \frac{dR}{dt}= \gamma I - \mu R + \nu S $ , $R(t_0)=R_0$
+\vskip10pt
+
+The parameter $\beta$ characterizes the speed of  
+
+The model is formulated under the constant population assumption, so that the mortality ($\mu$) unrelated to the modelled disease is compensated by the equivalent fertility, refreshing the susceptible population. \par
+
+The vaccination rate ($\nu$) is transferring individuals from susceptible state to recovered (assuming resistance to the disease).\par
+
+We can simplify the model by assuming away these two effects (letting both $\mu$ and $\nu$ equal to zero). Under this assumption the model becomes:
+\vskip10pt
+   $ \frac{dS}{dt}=-\beta\frac{SI}{N}$ , $S(t_0)=S_0$
+\vskip10pt
+   $ \frac{dE}{dt}=\beta\frac{SI}{N}-\sigma E$ , $E(t_0)=E_0$
+\vskip10pt
+   $ \frac{dI}{dt}=\sigma E  -\gamma I $ , $I(t_0)=I_0$
+\vskip10pt
+   $ \frac{dR}{dt}= \gamma I $ , $R(t_0)=R_0$
+\vskip10pt
+
+Note that this becomes a SIR model if we further assume parameter $\sigma$ to be equal to zero and combine the exposed and infected states together:
+\vskip10pt
+   $ \frac{dS}{dt}=-\beta\frac{SI}{N}$ , $S(t_0)=S_0$
+\vskip10pt
+   $ \frac{dI}{dt}=\beta\frac{SI}{N}  -\gamma I $ , $I(t_0)=I_0$
+\vskip10pt
+   $ \frac{dR}{dt}= \gamma I $ , $R(t_0)=R_0$
+\vskip10pt
+
+
+\end{document}

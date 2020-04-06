@@ -1,0 +1,23 @@
+v 3
+d 'epimodels': epidemiology models and simulations
+d by Sergiy Radyakin, Paolo Verme
+d
+d KW: epidemiology
+d KW: virus
+d KW: simulation
+d
+d Requires: Stata version 16.0 or newer
+d 
+d Distribution-Date: 20200402
+d
+d Author: Sergiy Radyakin, Senior Economist,
+d         Development Economics Data Group, The World Bank
+d Support: email sradyakin@@worldbank.org
+d
+f epi_sir.ado
+f epi_seir.ado
+f epi_seir.dlg
+f epimodels.sthlp
+f epi_sir.sthlp
+f epi_seir.sthlp
+
