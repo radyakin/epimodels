@@ -8,14 +8,16 @@ d KW: simulation
 d
 d Requires: Stata version 16.0 or newer
 d 
-d Distribution-Date: 20200402
+d Distribution-Date: 20200403
 d
 d Author: Sergiy Radyakin, Senior Economist,
 d         Development Economics Data Group, The World Bank
-d Support: email sradyakin@@worldbank.org
+d	  Paolo Verme,
+d         Fragility, Conflict and Violence, The World Bank
 d
 f epi_sir.ado
 f epi_seir.ado
+f epi_sir.dlg
 f epi_seir.dlg
 f epimodels.sthlp
 f epi_sir.sthlp
