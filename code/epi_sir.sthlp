@@ -79,6 +79,12 @@ infected(1) recovered(2) clear}{p_end}
 the data in memory (if any).{p_end}
 
 {phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) 
+infected(1) recovered(2) clear day0(2020-02-29)}{p_end}
+
+{pstd}Same as above, but indicate dates on the graph starting from 
+Feb.29, 2020 corresponding to day0 of the simulation.{p_end}
+
+{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) 
 infected(1) recovered(2) clear nograph}{p_end}
 {pstd}Same as above, but without plotting any graph.{p_end}
 
