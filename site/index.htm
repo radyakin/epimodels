@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html> 
+    <head>       
+    <style>
+pre {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin: 1em 0;
+    color:maroon;
+    background-color: #DDDDDD;
+}
+
+li{
+  margin: 12px 0;
+}
+</style>
+
+    <title>EPIMODELS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" />
+    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+    <script>
+        var prevSelection = "tab1";
+        $("#navbar ul li").live("click",function(){
+            var newSelection = $(this).children("a").attr("data-tab-class");
+            $("."+prevSelection).addClass("ui-screen-hidden");
+            $("."+newSelection).removeClass("ui-screen-hidden");
+            prevSelection = newSelection;
+        });
+    </script>
+    <script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
+    <style>
+        .tab-content{
+            width:100%;
+            height:100%;
+            background-color:white;
+            border-bottom-left-radius:0.5em;
+            border-bottom-right-radius:0.5em;
+        }
+        .tab-content>div{
+            padding:15px;
+        }                    
+
+    </style>
+    </head> 
+
+    <body> 
+        <div data-role="page">
+
+        <div data-role="header">
+        <h1>EPIMODELS - Stata module for epidemiological models and simulations</h1>
+        </div><!-- /header -->
+
+        <div data-role="content">   
+            <div data-role="navbar" id="navbar">
+                <ul>
+                    <li><a href="#" class="ui-btn-active" data-tab-class="tab1">Description</a></li>
+                    <li><a href="#" data-tab-class="tab2">Installation</a></li>
+                    <li><a href="#" data-tab-class="tab3">Usage</a></li>
+                    <li><a href="#" data-tab-class="tab4">Documentation and Resources</a></li>
+                    <li><a href="#" data-tab-class="tab5">Author</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div class="tab1">
+                <H2>Description</H2>
+
+<P><B>EPIMODELS</B> simulates SIR and SEIR epidemiological models.</P>
+
+<A href="images/sir_model_graph.png" target="_new"><IMG src="images/sir_model_graph.png" width=428></A>
+
+<P><B>EPIMODELS</B> provides interactive dialogs, which can be of an advantage for
+novice users, and also can be called from the users' do and ado-files for massive
+or repetitive jobs.</P>
+
+<IMG src="images/seir_model_dialog.png">
+
+
+		</div>
+                <div class="tab2 ui-screen-hidden">
+
+<H2>Installation</H2>
+
+	<P>Stata 16.0 or newer is required for <B>epimodels</B>.</P>
+
+                    <P>To install <B>epimodels</B> type literally the following in Stata's command prompt:</P>
+<PRE>net from http://www.radyakin.org/stata/epimodels/beta</PRE>
+<P>Then click on the link for <B>-epimodels-</B> in the Stata's viewer and click the <B>-install-</B> link.</P>
+</div>
+
+
+
+
+
+<div class="tab3 ui-screen-hidden">
+
+<H2>Usage</H2>
+
+<P>To call the SIR-model type the following in the Stata command line:</P>
+<PRE>
+db epi_sir
+</PRE>
+
+
+<P>To call the SEIR-model type the following in the Stata command line:</P>
+<PRE>
+db epi_seir
+</PRE>
+
+
+<P>Both models generate new variables storing the model data. Typically it makes sense to clear memory before calling the model dialog (or specify option <I>clear</I> in the command line).</P>
+
+</div>
+
+
+
+
+
+<div class="tab4 ui-screen-hidden">
+
+    <H2>Documentation and Resources</H2>
+
+    <P>Additional information is available in the following vignettes:</P>
+    <UL>
+    <LI><a href="http://www.radyakin.org/stata/epimodels/epimodels.pdf" target="_blank">Equations and model</a></LI>
+    </UL>
+
+</div>
+
+    <div class="tab5 ui-screen-hidden">
+	    <H2>Author</H2>
+	    <P><B>EPIMODELS</B> was written by
+	    <A href="http://econpapers.repec.org/scripts/search/search.asp?ft=radyakin" target="_new">Sergiy Radyakin</A> and 
+	    <A href="https://econpapers.repec.org/RAS/pve105.htm" target="_new">Paolo Verme</A>.</P>
+    </div>
+
+            </div>
+        </div><!-- /content -->
+
+        </div><!-- /page -->
+    </body>
+</html>
