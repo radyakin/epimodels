@@ -33,7 +33,8 @@ at which an exposed individual becomes infected{p_end}
 rate unrelated to the epidemy. The model assumes constant population 
 size, so mortality is compensated by the equivalent fertility 
 replenishing the susceptible population.{p_end}
-{synopt :{opt nu(#)}}The model parameter controlling vaccination rate transferring a susceptible individual directly to recovered state.{p_end}
+{synopt :{opt nu(#)}}The model parameter controlling vaccination rate 
+transferring a susceptible individual directly to recovered state.{p_end}
 
 {syntab :Initial conditions}
 {synopt :{opt susceptible(#)}}Number of susceptible individuals at t0{p_end}
@@ -44,7 +45,7 @@ replenishing the susceptible population.{p_end}
 {syntab :Other options}
 {synopt :{opt days(#)}}Number of days for advancing the simulations{p_end}
 {synopt :{opt day0(string)}}Optional date for beginning of the simulations 
-in the YYYY-MM-DD format.{p_end}
+in the YYYY-MM-DD format, for example: 2020-02-29 {p_end}
 {synopt :{opt nograph}}suppress graph{p_end}
 {synopt :{opt clear}}permits the data in memory to be cleared{p_end}
 
@@ -66,35 +67,43 @@ introduction of another state ({it:Exposed}). The persons in this state have
 had a contact with an infected, but are not infectious themselves.{p_end}
 
 {pstd}
-The initial conditions may be specified in absolute numbers, as shares, or expressed in percent.{p_end}
+The initial conditions may be specified in absolute numbers, as shares, or 
+expressed in percent.{p_end}
 
 {pstd}
 The model is solved numerically by applying the fourth-order Runge-Kutta algorithm.{p_end}
 
 {pstd}
-Population sizes are optional. Zero is implied when the population of a particular group is not specified. See examples below.{p_end}
+Population sizes are optional. Zero is implied when the population of a 
+particular group is not specified. See examples below.{p_end}
 
 {title:Examples}
 
     {hline}
 {pstd}Simulation{p_end}
-{phang2}{cmd:. epi_seir , days(15) beta(0.9) gamma(0.2) sigma(0.5) susceptible(10) infected(1) }{p_end}
+{phang2}{cmd:. epi_seir , days(15) beta(0.9) gamma(0.2) sigma(0.5) 
+susceptible(10) infected(1) }{p_end}
 
 {pstd}Perform SIR model simulation for a population of 10 susceptible and 1
 infected individuals over 15 days, and with specified values of the model
 parameters. Then draw a graph of the number of individuals in each state.{p_end}
 
-{phang2}{cmd:. epi_seir , days(15) beta(0.9) gamma(0.2) sigma(0.5) susceptible(10) infected(1) recovered(2) clear}{p_end}
+{phang2}{cmd:. epi_seir , days(15) beta(0.9) gamma(0.2) sigma(0.5) 
+susceptible(10) infected(1) recovered(2) clear}{p_end}
 
-{pstd}Same as above, but start also with 2 recovered individuals, and clear the data in memory (if any).{p_end}
+{pstd}Same as above, but start also with 2 recovered individuals, and clear the 
+data in memory (if any).{p_end}
 
-{phang2}{cmd:. epi_seir , days(15) beta(0.9) gamma(0.2) sigma(0.5) susceptible(10) infected(1) recovered(2) clear nograph}{p_end}
+{phang2}{cmd:. epi_seir , days(15) beta(0.9) gamma(0.2) sigma(0.5) 
+susceptible(10) infected(1) recovered(2) clear nograph}{p_end}
 
 {pstd}Same as above, but without plotting any graph.{p_end}
 
-{phang2}{cmd:. epi_seir , days(15) day0("2020-02-29") beta(0.9) gamma(0.2) sigma(0.5) susceptible(10) infected(1) recovered(2) clear}{p_end}
+{phang2}{cmd:. epi_seir , days(15) day0("2020-02-29") beta(0.9) gamma(0.2) 
+sigma(0.5) susceptible(10) infected(1) recovered(2) clear}{p_end}
 
-{pstd}Same as above, but with plotting of the graph and indicating that day zero of the simulation corresponds to February 29, 2020.{p_end}
+{pstd}Same as above, but with plotting of the graph and indicating that day zero 
+of the simulation corresponds to February 29, 2020.{p_end}
 
 
 

@@ -2,9 +2,9 @@ program define epi_sir, rclass
 
     version 16.0
 
-	syntax , beta(real) gamma(real) ///
-	         [susceptible(real 0.00) infected(real 0.00) recovered(real 0.00)] ///
-			 days(real) [day0(string) nograph clear newframe(string) *]
+	syntax , [beta(real 0.00) gamma(real 0.00) ///
+	         susceptible(real 0.00) infected(real 0.00) recovered(real 0.00) ///
+			 days(real 30) day0(string) nograph clear newframe(string) *]
 
 	local iterations= /*100* */ `days'
 	tempname M		 

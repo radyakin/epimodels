@@ -2,10 +2,20 @@ program define epi_seir, rclass
 	
 	version 16.0
 
-	syntax , beta(real) gamma(real) sigma(real) mu(real) nu(real) ///
-	         [susceptible(real 0.00) exposed(real 0.00) infected(real 0.00) recovered(real 0.00)] ///
-			 days(real) [day0(string) nograph clear newframe(string) *]
+	syntax , [beta(real 0.00) gamma(real 0.00) sigma(real 0.00) ///
+	          mu(real 0.00) nu(real 0.00) ///
+	         susceptible(real 0.00) exposed(real 0.00) ///
+			  infected(real 0.00) recovered(real 0.00) ///
+			 days(real 30) day0(string) nograph clear newframe(string) *]
 
+	if (`"`day0'"'!="") {
+		if (date(`"`day0'"',"YMD")==.) {
+			display as error "Option day0() is specified incorrectly."
+			display as error "The date must be specified in the YYYY-MM-DD format, for example: 2020-02-29"
+			error 111		  
+		}
+	}
+	
 	local iterations= /*100* */ `days'
 	tempname M		 
 	mata epimodels_seir("`M'")
