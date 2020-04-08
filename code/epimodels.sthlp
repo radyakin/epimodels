@@ -18,18 +18,24 @@ See:
 
 {phang}
 {help epi_sir} for the instructions to the SIR model
+{p_end}
 
 {phang}
 {help epi_seir} for the instructions to the SEIR model 
+{p_end}
 
 {title:Authors}
 
 {phang}
-{it:Paolo Verme}, The World Bank
-{phang}
 {it:Sergiy Radyakin}, The World Bank
+{p_end}
+
+{phang}
+{it:Paolo Verme}, The World Bank
+{p_end}
+
 {title:Also see}
 
 {psee}
 Online: {browse "http://www.radyakin.org/stata/epimodels/": epimodels homepage}
-
+{p_end}

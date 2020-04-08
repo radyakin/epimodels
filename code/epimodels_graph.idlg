@@ -1,0 +1,18 @@
+DIALOG graph, tabtitle("Graph")
+BEGIN
+		
+CHECKBOX ck_nogr      10       10     @       .,              ///
+        label("Suppress graph")                      ///
+        option(nograph) 
+		
+TEXT	tx_scheme	@	+30	120	.,		///
+	label("Scheme")
+COMBOBOX cb_scheme	@	+20	@	.,		///
+	option(scheme) dropdownlist contents(schemes)		
+
+CHECKBOX ck_colmodel      @       +30     @       .,              ///
+        label("Model colors")                      ///
+        option(colormodel) 
+		
+END
+

@@ -22,12 +22,12 @@ BEGIN
 
   TEXT     tx_mu      10  +25  390  ., label("Mu:")		   
   EDIT     ed_mu     @       +20     @       .,              ///
-        numonly option(mu) default(0) ///
+        numonly option(mu) default(0.00) ///
 		tooltip("The natural mortality rate (unrelated to disease).")
 
   TEXT     tx_nu      10  +25  390  ., label("Nu:")		   
   EDIT     ed_nu     @       +20     @       .,              ///
-        numonly option(nu) default(0) ///
+        numonly option(nu) default(0.00) ///
 		tooltip("The rate of vaccination, moving persons from susceptible to recovered directly.")
 		
 END
@@ -63,24 +63,8 @@ BEGIN
 		tooltip("The number of recovered individuals at the beginning of the model run.")
 END
 
-DIALOG calc, tabtitle("Calculation")
-BEGIN
-  TEXT  tx_iter      10  10  390  ., label("Days:")		   
-  SPINNER sp_days     @       +20     @       .,              ///
-        min(1) max(60) option(days) default(15) ///
-		tooltip("Number of days")
-		
-  TEXT  tx_day0      10  +20  @  ., label("Day zero (t0) in YYYY-MM-DD format:")
-  EDIT  ed_day0     @       +20     @       .,              ///
-        option(day0) default("")		///
-		tooltip("Date corresponding to day zero of the simulation (date of t0).")
-		
-CHECKBOX ck_nogr      @       +30     @       .,              ///
-        label("Suppress graph")                      ///
-        option(nograph) 
-
-END
-
+INCLUDE epimodels_calc
+INCLUDE epimodels_graph
 
 PROGRAM command
 BEGIN
@@ -99,7 +83,12 @@ BEGIN
 	   
 	   optionarg calc.sp_days
 	   optionarg calc.ed_day0
-	   option calc.ck_nogr
+	   option calc.ck_clear
+	   option calc.ck_percent
+	   
+	   option graph.ck_nogr
+	   optionarg graph.cb_scheme
+	   option graph.ck_colmodel
 	endoptions
 END
 

@@ -6,10 +6,10 @@
 {title:Title}
 
 {p2colset 5 16 18 2}{...}
-{p2col:{hi: epimodels} {hline 2} Set of calculation routines for epidemiological 
-modeling and simulations.}
+{p2col:{hi: epi_sir} {hline 2} Implementation of SIR epidemiological model and simulations.}
 {p_end}
 {p2colreset}{...}
+
 
 
 {title:Syntax}
@@ -22,27 +22,18 @@ modeling and simulations.}
 {synoptset 25 tabbed}{...}
 {synopthdr}
 {synoptline}
-{syntab :Model parameters}
+{syntab :Model parameters (optional, assumed to be zero if not specified)}
 {synopt :{opt beta(#)}}The model parameter controlling how often a 
 susceptible-infected contact results in a new infection{p_end}
-{synopt :{opt gamma(#)}}The model parameter controlling how often an infected 
-individual recovers{p_end}
+{synopt :{opt gamma(#)}}The model parameter controlling for the rate of recovery.{p_end}
 
-{syntab :Initial conditions}
+{syntab :Initial conditions (optional, assumed to be zero if not specified)}
 {synopt :{opt susceptible(#)}}Number of susceptible individuals at t0{p_end}
 {synopt :{opt infected(#)}}Number of infected individuals at t0{p_end}
 {synopt :{opt recovered(#)}}Number of recovered individuals at t0{p_end}
 
-{syntab :Other options}
-{synopt :{opt days(#)}}Number of days for advancing the simulations{p_end}
-{synopt :{opt day0(string)}}Optional date for beginning of the simulations in 
-the YYYY-MM-DD format, for example: 2020-02-29 {p_end}
-{synopt :{opt nograph}}suppress graph{p_end}
-{synopt :{opt clear}}permits the data in memory to be cleared{p_end}
+INCLUDE help epimodels_common_options
 
-{syntab :Y axis, X axis, Titles, Legend, Overall, By}
-{synopt :{it:twoway_options}}any of the options documented in 
-     {manhelpi twoway_options G-3}{p_end}
 {synoptline}
 {p2colreset}{...}
 
@@ -57,35 +48,35 @@ used for modeling the development of directly transmitted infectious disease
 for the model description and assumptions.
 
 {pstd}
-The initial conditions may be specified in absolute numbers, as shares, or 
-expressed in percent.
+The initial conditions must be specified in absolute numbers, (not as shares, or percentages).
+
+{pstd}
+The output can be produced in absolute numbers, or in percentages.{p_end}
 
 
 {title:Examples}
 
     {hline}
 {pstd}Simulation{p_end}
-{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) 
-infected(1) }{p_end}
+
+{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) infected(1) }{p_end}
 
 {pstd}Perform SIR model simulation for a population of 10 susceptible and 1 
 infected individuals, with infection rate 0.3 and recovery rate 0.9 over 150 
 days, and display graph{p_end}
 
-{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) 
-infected(1) recovered(2) clear}{p_end}
+{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) infected(1) recovered(2) clear}{p_end}
 
 {pstd}Same as above, but start also with 2 recovered individuals, and clear 
 the data in memory (if any).{p_end}
 
-{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) 
-infected(1) recovered(2) clear day0(2020-02-29)}{p_end}
+{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) infected(1) recovered(2) clear day0(2020-02-29)}{p_end}
 
 {pstd}Same as above, but indicate dates on the graph starting from 
 Feb.29, 2020 corresponding to day0 of the simulation.{p_end}
 
-{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) 
-infected(1) recovered(2) clear nograph}{p_end}
+{phang2}{cmd:. epi_sir , days(150) beta(0.9) gamma(0.3) susceptible(10) infected(1) recovered(2) clear nograph}{p_end}
+
 {pstd}Same as above, but without plotting any graph.{p_end}
 
 {title:References}
@@ -96,6 +87,18 @@ theory of epidemics, part i. Proceedings of the Royal Society of Edinburgh.
 Section A. Mathematics. 115 700-721
 {browse "https://royalsocietypublishing.org/doi/10.1098/rspa.1927.0118":online}
 
+{pstd}The SIR Model for Spread of Disease. Mathematical Association of America. {browse "https://www.maa.org/press/periodicals/loci/joma/the-sir-model-for-spread-of-disease-the-differential-equation-model": online}
+
+
+{title:Authors}
+
+{phang}
+{it:Sergiy Radyakin}, The World Bank
+{p_end}
+
+{phang}
+{it:Paolo Verme}, The World Bank
+{p_end}
 
 {title:Also see}
 
