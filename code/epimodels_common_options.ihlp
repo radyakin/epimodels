@@ -6,7 +6,7 @@
 {synopt :{opt day0(string)}}Optional date for beginning of the simulations 
 in the YYYY-MM-DD format, for example: 2020-02-29 {p_end}
 {synopt :{opt clear}}permits the data in memory to be cleared{p_end}
-{synopt :{opt percent}} indicates the model results should be reported as percentages as opposed to default reporting in absolute numbers.{p_end}
+{synopt :{opt percent}}indicates the model results should be reported as percentages as opposed to default reporting in absolute numbers.{p_end}
 
 {syntab :Graphing}
 {synopt :{opt nograph}}suppress graph{p_end}

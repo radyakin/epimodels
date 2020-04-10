@@ -87,11 +87,17 @@ program define ditable, rclass
 	
 	local twid = 17
 	local cwid = 14
+	local lmarg = 2
+	
+	local twidth = `twid' + 3*(`cwid'+1)
+	local titlepos = `lmarg' + floor((`twidth'-strlen(`"`modeltitle'"'))/2)
+	if (`titlepos' < `lmarg') local titlepos=`lmarg'	
+	local titleoffset=`"_col(`=`titlepos'+1')"'
 	
 	display ""
-    display _col(22) "`modeltitle'"
+    display `titleoffset' "`modeltitle'"
     tempname tab
-	.`tab' = ._tab.new, col(4) lmarg(2) commas
+	.`tab' = ._tab.new, col(4) lmarg(`lmarg') commas
 	.`tab'.width    `twid' | `cwid' `cwid' `cwid'
 	.`tab'.titlefmt .   %`cwid's   %`cwid's %`cwid's
 	.`tab'.numfmt   .   %`cwid'.`digits'f`comma'  %`cwid'.`digits'f`comma' %`cwid'.`digits'f`comma'

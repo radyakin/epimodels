@@ -74,7 +74,7 @@ The model is solved numerically by applying the fourth-order Runge-Kutta algorit
 {phang2}
 {cmd:. epi_seir , days(15) beta(0.9) gamma(0.2) sigma(0.5) susceptible(10) infected(1) } {p_end}
 
-{pstd}Perform SIR model simulation for a population of 10 susceptible and 1
+{pstd}Perform SEIR model simulation for a population of 10 susceptible and 1
 infected individuals over 15 days, and with specified values of the model
 parameters. Then draw a graph of the number of individuals in each state.
 {p_end}
