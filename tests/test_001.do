@@ -35,3 +35,4 @@ confirm numeric variable e
 confirm numeric variable i
 confirm numeric variable r
 
+// END OF TEST FILE
