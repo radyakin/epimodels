@@ -7,9 +7,9 @@ program define check_total_population
     version 16.0
 	syntax anything
 	
-	if (`anything' < 1.00) {
+	if (`anything' < 1.00+`c(epsdouble)') {
 		display ""
-	    display as result "Warning! Total population size (`totpop') is less than 1.00"
+	    display as result "Warning! Total population size (`anything') is less than 1.00"
 		display as result "Make sure the initial conditions at t0 represent population groups counts in persons."
 	}
 end
