@@ -66,6 +66,8 @@ The output can be produced in absolute numbers, or in percentages.{p_end}
 {pstd}
 The model is solved numerically by applying the fourth-order Runge-Kutta algorithm.{p_end}
 
+INCLUDE help epimodels_common_output
+
 {title:Examples}
 
     {hline}

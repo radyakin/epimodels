@@ -60,6 +60,7 @@ The initial conditions must be specified in absolute numbers,
 {pstd}
 The output can be produced in absolute numbers, or in percentages.{p_end}
 
+INCLUDE help epimodels_common_output
 
 {title:Examples}
 
