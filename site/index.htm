@@ -11,8 +11,13 @@ pre {
     background-color: #DDDDDD;
 }
 
-li{
+li {
   margin: 12px 0;
+}
+
+img {
+  display:block;
+  max-width: 100%;
 }
 </style>
 
@@ -46,9 +51,9 @@ li{
     </head> 
 
     <body> 
-        <div data-role="page">
+        <div data-role="page" data-theme="b">
 
-        <div data-role="header">
+        <div data-role="header" data-theme="b">
         <h1>EPIMODELS - Stata module for epidemiological models and simulations</h1>
         </div><!-- /header -->
 
@@ -62,35 +67,30 @@ li{
                     <li><a href="#" data-tab-class="tab5">Author</a></li>
                 </ul>
             </div>
-            <div class="tab-content">
-                <div class="tab1">
-                <H2>Description</H2>
 
+<div class="tab-content">
+
+<div class="tab1">
+<H2>Description</H2>
 <P><B>EPIMODELS</B> simulates SIR and SEIR epidemiological models.</P>
-
 <A href="images/sir_model_graph.png" target="_new"><IMG src="images/sir_model_graph.png" width=428></A>
-
 <P><B>EPIMODELS</B> provides interactive dialogs, which can be of an advantage for
 novice users, and also can be called from the users' do and ado-files for massive
 or repetitive jobs.</P>
-
 <IMG src="images/seir_model_dialog.png">
+</div>
 
 
-		</div>
-                <div class="tab2 ui-screen-hidden">
+<div class="tab2 ui-screen-hidden">
 
 <H2>Installation</H2>
-
-	<P>Stata 16.0 or newer is required for <B>epimodels</B>.</P>
-
+<P>Stata 16.0 or newer is required for <B>epimodels</B>.</P>
 <P>To install <B>epimodels</B> type literally the following in Stata's command prompt:</P>
 <PRE>
 
 ssc install epimodels
 
 </PRE>
-
 <H2>Update</H2>
 <P>To update <B>epimodels</B> (after it is installed) type literally the following in Stata's command prompt:</P>
 <PRE>
@@ -98,7 +98,6 @@ ssc install epimodels
 ado update epimodels, update
 
 </PRE>
-
 <H2>Uninstallation</H2>
 <P>To uninstall <B>epimodels</B> type literally the following in Stata's command prompt:</P>
 <PRE>
@@ -106,8 +105,6 @@ ado update epimodels, update
 ssc uninstall epimodels
 
 </PRE>
-
-
 </div>
 
 
@@ -198,7 +195,7 @@ plotting the results all together at the same chart.</P>
 <div class="tab4 ui-screen-hidden">
 
     <H2>Documentation and Resources</H2>
-
+    <P>Epimodels is available for download from <A href="https://ideas.repec.org/c/boc/bocode/s458764.html">this RePEc page</A>.</P>
     <P>Additional information is available in the following vignettes:</P>
     <UL>
     <LI><a href="http://www.radyakin.org/stata/epimodels/epimodels.pdf" target="_blank">Equations and model</a></LI>
