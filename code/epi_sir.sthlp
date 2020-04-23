@@ -70,7 +70,7 @@ INCLUDE help epimodels_common_output
 {phang2}{cmd:. epi_sir , days(100) beta(0.9) gamma(0.3) susceptible(10) infected(1) }{p_end}
 
 {pstd}Perform SIR model simulation for a population of 10 susceptible and 1 
-infected individuals, with infection rate 0.3 and recovery rate 0.9 over 100 
+infected individuals, with infection rate 0.9 and recovery rate 0.3 over 100 
 days, and display graph{p_end}
 
 {phang2}{cmd:. epi_sir , days(100) beta(0.9) gamma(0.3) susceptible(10) infected(1) recovered(2) clear}{p_end}
