@@ -1,9 +1,14 @@
+
 clear all
-version 16.0
+local vers "16.0"
+version `vers'
+
+cd "..\code"
 
 mata 
 
 real matrix epimodels_rk4(pointer(real matrix function) scalar f, real matrix param, real stp, real matrix initc, real iters) {
+    version `vers'
 	res = initc
 	for(tt=1; tt<=iters; tt++) {
 	  prevVals = res[rows(res),2..cols(res)] 
@@ -22,14 +27,16 @@ real matrix epimodels_rk4(pointer(real matrix function) scalar f, real matrix pa
 }
 
 real matrix epimodels_sir_eq(real matrix x, real matrix parm) {
-  N=x[1]+x[2]+x[3]
-  r1= -parm[1]*x[1]*x[2]/N
-  r2= parm[1]*x[1]*x[2]/N - parm[2]*x[2]
-  r3= parm[2]*x[2]
-  return(r1,r2,r3)
+    version `vers'
+    N=x[1]+x[2]+x[3]
+    r1= -parm[1]*x[1]*x[2]/N
+    r2= parm[1]*x[1]*x[2]/N - parm[2]*x[2]
+    r3= parm[2]*x[2]
+    return(r1,r2,r3)
 }
 
 void function epimodels_sir(string scalar matname) {
+    version `vers'
 	par_beta  = strtoreal(st_local("beta"))
 	par_gamma = strtoreal(st_local("gamma"))
 	ini_S = strtoreal(st_local("susceptible"))
@@ -48,15 +55,17 @@ void function epimodels_sir(string scalar matname) {
 }
 
 real matrix epimodels_seir_eq(real matrix x, real matrix parm) {
-  r1 = parm[4]*(x[2]+x[3]+x[4]) - parm[1]*x[3]*x[1]/(x[1]+x[2]+x[3]+x[4]) - parm[5]*x[1]
-  r2 = parm[1]*x[3]*x[1]/(x[1]+x[2]+x[3]+x[4]) - (parm[4] + parm[3])*x[2]
-  r3 = parm[3]*x[2] - (parm[4]+parm[2])*x[3]
-  r4 = parm[2]*x[3] - parm[4]*x[4]+parm[5]*x[1]
-  return(r1,r2,r3,r4)
+    version `vers'
+    r1 = parm[4]*(x[2]+x[3]+x[4]) - parm[1]*x[3]*x[1]/(x[1]+x[2]+x[3]+x[4]) - parm[5]*x[1]
+    r2 = parm[1]*x[3]*x[1]/(x[1]+x[2]+x[3]+x[4]) - (parm[4] + parm[3])*x[2]
+    r3 = parm[3]*x[2] - (parm[4]+parm[2])*x[3]
+    r4 = parm[2]*x[3] - parm[4]*x[4]+parm[5]*x[1]
+    return(r1,r2,r3,r4)
 }
 
 
 void function epimodels_seir(string scalar matname) {
+    version `vers'
 	par_beta  = strtoreal(st_local("beta"))
 	par_gamma = strtoreal(st_local("gamma"))
 	par_sigma = strtoreal(st_local("sigma"))
@@ -80,12 +89,184 @@ void function epimodels_seir(string scalar matname) {
 
 
 
+
+
+real epi_sum2diff(string v1, string v2) {
+    version `vers'
+	// calculate sum of squared differences 
+	// between variables v1 and v2
+	V1=J(0,0,.)
+	V2=J(0,0,.)
+	st_view(V1,.,v1)
+	st_view(V2,.,v2)
+	D=V1-V2
+	sum=colsum(D:*D)
+	return(sum)
+}
+
+real epi_getpenalty(string fit) {
+    version `vers'	
+	result=0
+
+	for(i=1;i<=strlen(fit);i++) {
+	  l = strupper(substr(fit,i,1))
+	  v0index = strpos(subinstr(st_local("model_vars")," ","",.),l)
+	  v0name = tokens(st_local("model_stocks"))[v0index]
+	  vnamedata = st_local("v"+v0name)
+	  vnamemodel = l
+	  result=result-epi_sum2diff(vnamedata,vnamemodel)
+	}
+
+	return(result)
+}
+
+string epi_makeparamstr(real rowvector p, string allparams) {
+    version `vers'
+	t=tokens(allparams)
+	result=""
+	idx=1
+	for(i=1;i<=cols(t);i++) {
+	  pname=t[i]
+	  pv=strtoreal(st_local(pname))
+	  if (missing(pv)) {
+	    pv=p[idx]
+	    idx=idx+1
+	  }
+	  result=result+" "+pname+"("+strofreal(pv)+")"
+	}
+	return(result)
+}
+
+void epi_searcheval(todo, p, v, g, H) {
+    version `vers'
+	i=strtoreal(st_local("iterations"))
+	i=i+1
+	st_local("iterations", strofreal(i))
+
+	cmd = sprintf("quietly %s , %s %s days(%g) nograph", ///
+	  st_local("modelname"), ///
+	  epi_makeparamstr(p,st_local("model_params")), ///
+	  st_local("initial_conditions"), ///
+	  st_nobs()-1 ///	  
+	)
+	stata(cmd)
+	
+	v = epi_getpenalty(st_local("fit"))
+	// todo: all models always produce variable 't',
+	// which is unsafe as this variable may already exist
+	stata("quietly drop t " + st_local("model_vars"))
+	
+	if (st_global("epi_search_verbose")=="1") {
+		outstr = "{text:%10.0g} {text:%14.10g} {result:%14.10g} {result:%14.10g} {break}"
+		printf(outstr,i,v,p[1],p[2])
+	}
+
+}
+
+real rowvector epi_getstartparams(string allparams) {
+    version `vers'
+	t=tokens(allparams)
+	p0=J(1,0,.)
+	for(i=1;i<=cols(t);i++) {
+	  pname=t[i]
+	  if (st_local(pname)==".") {
+	    p0=p0, strtoreal(st_local(pname+"0"))
+	  }
+	}
+	return(p0)
+}
+
+void epi_postendparams(real rowvector x, string allparams) {
+    version `vers'
+	t=tokens(allparams)
+	idx=1
+	for(i=1;i<=cols(t);i++) {
+	  pname=t[i]
+	  if (st_local(pname)==".") {
+	    st_local(pname+"1", strofreal(x[idx]))
+		idx=idx+1
+	  }
+	}
+	st_local("finalparams", epi_makeparamstr(x, allparams))
+}
+
+void epi_searchparams() {
+    version `vers'
+	model_params = st_local("model_params")
+	S = optimize_init()
+	optimize_init_evaluator(S, &epi_searcheval())
+	p0=epi_getstartparams(model_params)
+	optimize_init_params(S, p0)
+	optimize_init_technique(S, "nr 5 dfp 5 bfgs 5")
+	optimize_init_conv_ignorenrtol(S, "on" )
+	x = optimize(S)
+	epi_postendparams(x, model_params)
+}
+
+string epi_greek(string name) {
+    version `vers'
+	L = tokens("alpha beta gamma delta epsilon zeta eta theta iota kappa " + ///
+	 "lambda mu nu xi omicron pi rho sigma tau upsilon phi chi psi omega")
+	
+	for(i=1;i<=cols(L);i++) {
+	    if (L[i]==name) {
+		  return(uchar(944+i))
+		}
+	}
+	
+	printf("{error: unknown letter: %s}", name)
+}
+
+void epi_getmodelmeta(string model) {
+    version `vers'	
+	// When defining new models:
+	// - model_vars MUST CORRESPOND TO model_stocks!
+	// - model_default_fit MUST BE ONE OR SOME OF the model_vars!
+	
+	if (model=="") {
+	    st_local("models_known", "SIR SEIR")
+		exit()
+	}
+	
+	if (strupper(model)=="SIR" | model=="epi_sir") {
+		st_local("model_params", "beta gamma")
+		st_local("model_stocks", "susceptible infected recovered")
+		st_local("model_vars", "S I R")
+		st_local("model_default_fit", "I")
+		exit()
+	}
+	
+	if (strupper(model)=="SEIR" | model=="epi_seir") {
+		st_local("model_params", "beta gamma sigma mu nu")
+		st_local("model_stocks", "susceptible exposed infected recovered")
+		st_local("model_vars", "S E I R")
+		st_local("model_default_fit", "I")
+		exit()
+	}
+	
+	printf("{error:Error! Unknown model: %s.}", model)
+	exit(error(111))
+}
+
+
+
 mata mlib create lepimodels, replace
 mata mlib add lepimodels epimodels_rk4()
 mata mlib add lepimodels epimodels_sir_eq()
 mata mlib add lepimodels epimodels_sir()
 mata mlib add lepimodels epimodels_seir()
 mata mlib add lepimodels epimodels_seir_eq()
+
+mata mlib add lepimodels epi_sum2diff()
+mata mlib add lepimodels epi_getpenalty()
+mata mlib add lepimodels epi_makeparamstr()
+mata mlib add lepimodels epi_searcheval()
+mata mlib add lepimodels epi_getstartparams()
+mata mlib add lepimodels epi_postendparams()
+mata mlib add lepimodels epi_searchparams()
+mata mlib add lepimodels epi_greek()
+mata mlib add lepimodels epi_getmodelmeta()
+
 mata mlib index
 
 end
