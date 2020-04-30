@@ -50,12 +50,19 @@ program define fit, rclass
 	  local `p'1=``p''
 	}
 	
+	local totalpop=0
 	local stockvarlist=""
 	foreach s in `model_stocks' {
+	  local totalpop=`totalpop'+``s''
 	  local initial_conditions = `"`initial_conditions' `s'(``s'')"'
 	  local vname=`"`v`s''"'
 	  if (`"`vname'"'=="") local vname="."
 	  local stockvarlist `"`stockvarlist' `vname'"'
+	}
+	
+	if (`totalpop'<=0) {
+	    display as error "Error! Total population must be more than zero at t0!"
+	    error 112
 	}
 	
 	local iterations=0
