@@ -132,7 +132,7 @@ makes sense to clear memory before calling the model dialog (or specify
 option <I>clear</I> in the command line).</P>
 
 
-<H2>Gallery</H2>
+<H2>Gallery and Examples</H2>
 <div data-role="collapsible">
 <h4>Black-and-white chart</h4>
 <p><B>epimodels</B> produces output using standard Stata's graphing 
@@ -167,7 +167,9 @@ each axis, note the <I>angle(#)</I> option:</p>
 <p>Model charts are often supplemented with the illustration of the peak of infected.</p>
     <CENTER><IMG src="images/sir_peak.svg"></CENTER>
     <PRE> do "https://raw.githubusercontent.com/radyakin/epimodels/master/demo/demo2.do"</PRE>
-<P>The strategy in this <A href="https://raw.githubusercontent.com/radyakin/epimodels/master/demo/demo2.do">example</A> is to perform the first model run without displaying any results,
+<P>The strategy in this 
+<A href="https://raw.githubusercontent.com/radyakin/epimodels/master/demo/demo2.do">
+example</A> is to perform the first model run without displaying any results,
 solely to obtain the peak values, then perform a second run already plotting the results and
 overlaying with the peak illustration.</P>
 <P>One can equally run a model with or without the graphing, then build another graph with 
@@ -187,10 +189,24 @@ plotting the results all together at the same chart.</P>
 
 <div data-role="collapsible">
 <h4>Epidemics profile</h4>
-<p>Given that the overall population is fixed, plotting the size of each group in a stacked form helps understand the development of epidemics.</p>
+<p>Given that the overall population is fixed, plotting the size of each group 
+in a stacked form helps understand the development of epidemics.</p>
     <CENTER><IMG src="images/demo4.svg"></CENTER>
     <PRE> do "https://raw.githubusercontent.com/radyakin/epimodels/master/demo/demo4.do"</PRE>
-<P>The peak value of infected can also be automatically plotted, as in this <A href="https://raw.githubusercontent.com/radyakin/epimodels/master/demo/demo4.do">example</A>.</P>
+<P>The peak value of infected can also be automatically plotted, as in this 
+<A href="https://raw.githubusercontent.com/radyakin/epimodels/master/demo/demo4.do">example</A>.</P>
+</div>
+
+<div data-role="collapsible">
+<h4>Social distancing policy simulation</h4>
+<p>We can simulate the effect of the policy of social distancing, here reducing 
+the intensity of contacts from 0.9 to 0.3.</p>
+    <CENTER><IMG src="images/demo5.svg"></CENTER>
+    <PRE> do "https://raw.githubusercontent.com/radyakin/epimodels/master/demo/demo5.do"</PRE>
+<P>The strategy here is to do a simulation with a base scenario, then do a 
+second simulation picking from a mid-point of the simulation, but continuing 
+with values of parameters modified by the policy. The full code is shown in this 
+<A href="https://raw.githubusercontent.com/radyakin/epimodels/master/demo/demo5.do">example</A>.</P>
 </div>
 
 
@@ -203,14 +219,19 @@ plotting the results all together at the same chart.</P>
 <div class="tab4 ui-screen-hidden">
 
     <H2>Documentation and Resources</H2>
-    <P>Epimodels is available for download from RePEc <A href="https://ideas.repec.org/c/boc/bocode/s458764.html">Ideas</A>
-and RePEc <A href="https://econpapers.repec.org/software/bocbocode/s458764.htm">EconPapers</A>.</P>
-    <P><A href="https://www.statalist.org/forums/forum/general-stata-discussion/general/1547096">Announcement of the epimodels</A> was posted to StataList on April 15, 2020.</P>
+    <P>Epimodels is available for download from RePEc 
+	<A href="https://ideas.repec.org/c/boc/bocode/s458764.html">Ideas</A> and 
+	RePEc <A href="https://econpapers.repec.org/software/bocbocode/s458764.htm">EconPapers</A>.</P>
+    <P><A href="https://www.statalist.org/forums/forum/general-stata-discussion/general/1547096">
+	Announcement of the epimodels</A> was posted to StataList on April 15, 2020.</P>
     <P>Additional information is available in the following vignettes:</P>
     <UL>
-    <LI><a href="sir_model.pdf" target="_blank">COVID-19. Modelling the Epidemic. The SIR Model.</a></LI>
-    <LI><a href="seir_model.pdf" target="_blank">COVID-19. Modelling the Epidemic. The SEIR Model.</a></LI>
-    <LI><a href="epimodels.pdf" target="_blank">Equations and model</a></LI>
+    <LI><a href="sir_model.pdf" target="_blank">
+	  COVID-19. Modelling the Epidemic. The SIR Model.</a></LI>
+    <LI><a href="seir_model.pdf" target="_blank">
+	  COVID-19. Modelling the Epidemic. The SEIR Model.</a></LI>
+    <LI><a href="epimodels.pdf" target="_blank">
+	  Equations and model</a></LI>
     </UL>
 
 </div>
