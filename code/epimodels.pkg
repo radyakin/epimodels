@@ -8,7 +8,7 @@ d KW: simulation
 d
 d Requires: Stata version 16.0 or newer
 d 
-d Distribution-Date: 20200409
+d Distribution-Date: 20200427
 d
 d Author: Sergiy Radyakin, Senior Economist,
 d         Development Economics Data Group, The World Bank
@@ -17,10 +17,12 @@ d         Fragility, Conflict and Violence, The World Bank
 d
 * COMMON FILES
 f lepimodels.mlib
+f epimodels.ado
 f epimodels_util.ado
 f epimodels_calc.idlg
 f epimodels_graph.idlg
 f epimodels.sthlp
+f epimodels_fit.sthlp
 f epimodels_common_options.ihlp
 f epimodels_common_output.ihlp
 * MODEL SIR-specific

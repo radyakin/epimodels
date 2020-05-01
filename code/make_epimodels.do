@@ -248,6 +248,16 @@ void epi_getmodelmeta(string model) {
 	exit(error(111))
 }
 
+void epi_menu() {
+	stata(`"window menu clear"')
+	stata(`"window menu append submenu "stUserStatistics" "Epimodels""')
+	stata(`"window menu append item "Epimodels" "Estimate" `"window stopbox note "Dialog for this command is not implemented yet""'"')
+	stata(`"window menu append submenu "Epimodels" "Simulate""')
+	stata(`"window menu append item "Simulate" "SIR model" "db epi_sir""')
+	stata(`"window menu append item "Simulate" "SEIR model" "db epi_seir""')
+	stata(`"window menu append item "Epimodels" "About" `"window stopbox note "Stata package Epimodels" "by Sergiy Radyakin and Paolo Verme" "The World Bank, 2020""'"')
+	stata(`"window menu refresh"')
+}
 
 
 mata mlib create lepimodels, replace
@@ -266,6 +276,8 @@ mata mlib add lepimodels epi_postendparams()
 mata mlib add lepimodels epi_searchparams()
 mata mlib add lepimodels epi_greek()
 mata mlib add lepimodels epi_getmodelmeta()
+
+mata mlib add lepimodels epi_menu()
 
 mata mlib index
 
