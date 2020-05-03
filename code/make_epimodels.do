@@ -100,6 +100,9 @@ real epi_sum2diff(string v1, string v2) {
 	st_view(V1,.,v1)
 	st_view(V2,.,v2)
 	D=V1-V2
+	for(i=1;rows(D);i++) {
+	    if (D[i,1]==.) D[i,1]=0
+	}
 	sum=colsum(D:*D)
 	return(sum)
 }
@@ -193,13 +196,19 @@ void epi_postendparams(real rowvector x, string allparams) {
 void epi_searchparams() {
     version `vers'
 	model_params = st_local("model_params")
-	S = optimize_init()
-	optimize_init_evaluator(S, &epi_searcheval())
 	p0=epi_getstartparams(model_params)
-	optimize_init_params(S, p0)
-	optimize_init_technique(S, "nr 5 dfp 5 bfgs 5")
-	optimize_init_conv_ignorenrtol(S, "on" )
-	x = optimize(S)
+	
+	if (st_local("allparamsknown")=="0") {
+		S = optimize_init()
+		optimize_init_evaluator(S, &epi_searcheval())
+		optimize_init_params(S, p0)
+		optimize_init_technique(S, "nr 5 dfp 5 bfgs 5")
+		optimize_init_conv_ignorenrtol(S, "on" )
+		x = optimize(S)
+	}
+	else {
+		x=p0
+	}
 	epi_postendparams(x, model_params)
 }
 

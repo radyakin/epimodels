@@ -33,31 +33,52 @@ program define fit, rclass
 	    local syntax_stocks `"`syntax_stocks' `s'(real 0.0000) v`s'(varname numeric)"'
 	}
 	
-	syntax anything, [ `syntax_params' `syntax_stocks' fit(string) format(string)]		
-	// Not all variables specified in v*() must be mentioned in fit(), 
-	// but ALL that is mentioned in fit() must be specified	in v*()!
-	// ToDo: add check for the above!
-	
-	// ToDo: add check that no search is necessary if all the parameters are known
+	syntax anything, [ `syntax_params' `syntax_stocks' format(string)]		
 	
 	if (`"`format'"'=="") local format "%10.5f"
 	
-	if (`"`fit'"'=="") local fit="`model_default_fit'"
-	local fit=subinstr(strupper(`"`fit'"')," ","",.)
-	
+	local allparamsknown=1
 	foreach p in `model_params' {
 	  if (`"``p''"'=="") local `p'="."	  
 	  local `p'1=``p''
+	  if missing(``p'') local allparamsknown=0
 	}
-	
+
 	local totalpop=0
 	local stockvarlist=""
+	local stockok=0
+	local c=1
+	local fit=""
+	
 	foreach s in `model_stocks' {
+	  local vn : word `c' of `model_vars'
+	  local vname=`"`v`s''"'
+	  if (`"`vname'"'=="") {
+	    local vname="."
+	  }
+	  else {
+	    confirm numeric variable `v`s''
+	    local stockok=1
+		local fit "`fit'`vn'" // generate the fit parameter based on the actual variables supplied
+		
+		// check initial conditions
+		local inivalue=`v`s''[1]
+		if (`inivalue'!=``s'') {
+		    display in yellow "Warning! Initial value for `s'==``s'' is ignored because it is different from the value `inivalue' in the specified time series `v`s''."
+		}
+		local `s'=`inivalue'
+	  }
+	  
 	  local totalpop=`totalpop'+``s''
 	  local initial_conditions = `"`initial_conditions' `s'(``s'')"'
-	  local vname=`"`v`s''"'
-	  if (`"`vname'"'=="") local vname="."
+  
 	  local stockvarlist `"`stockvarlist' `vname'"'
+	  local c=`c'+1
+	}
+
+	if (`stockok'==0) {
+	    display as error "Error! At least one population variable must be specified!"
+		error 112
 	}
 	
 	if (`totalpop'<=0) {
@@ -67,7 +88,7 @@ program define fit, rclass
 	
 	local iterations=0
 	
-	mata epi_searchparams()
+    mata epi_searchparams()
 	
 	local modeltitle `"`anything' model estimation"'
 	local twid = 17
