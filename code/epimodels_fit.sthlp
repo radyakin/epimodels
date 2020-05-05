@@ -54,9 +54,6 @@ infected individuals at t{p_end}
 recovered individuals at t{p_end}
 
 {syntab :Other options}
-{synopt :{opt fit(string)}}Specifies, which levels should be fit{break} 
-  (default is "I" if nothing is specified).{break}
-  [TO BE REMOVED IN FUTURE VERSIONS]{p_end}
 {synopt :{opt format(%fmt)}}Specifies, which format should be used 
   to format the parameter estimates in the output{break} 
   (default is "%10.5f" if nothing is specified){p_end}
@@ -139,12 +136,6 @@ the values of the parameters. It may or may not converge, depending on
 whether there is indeed a unique solution, or several, resulting in
 similar quality of fit, and also on how appropriate is the selected
 model for your data.{p_end}
-
-{pstd}
-Specify option {opt fit(string)} to indicate which components of the 
-model you wish to fit. For example, fit("IR") will fit infected and
-recovered populations, and disregard the quality of fit for the 
-susceptible population.{p_end}
 
 {pstd}
 Specify option {opt format(%fmt)} to provide a custom formatting of
@@ -254,14 +245,14 @@ according to variable {it:infpop}.{p_end}
 estimated from the data.{p_end}
 
 {phang2}{cmd:. epimodels fit SIR , gamma0(0.65) susceptible(1000)}{break}
-  {cmd:infected(50) vinfected(infpop) vrecovered(recpop) fit("IR") }{p_end}
+  {cmd:infected(50) vinfected(infpop) vrecovered(recpop) }{p_end}
 
 {pstd}Same as above, but search for the parameters that fit two series from 
 the data: the infected population as contained in the variable {it: infpop} 
 and recovered population as contained in the variable {it: recpop}.{p_end}
 
 {phang2}{cmd:. epimodels fit SEIR , mu(0.00) nu(0.00) susceptible(1000)}{break}
-  {cmd:infected(50) vinfected(infpop) vrecovered(recpop) fit("IR") }{p_end}
+  {cmd:infected(50) vinfected(infpop) vrecovered(recpop) }{p_end}
 
 {pstd}Same as above, but estimate the three parameters of the SEIR model, 
 namely: {it:beta}, {it:gamma}, {it:sigma}, by improving on the starting 
