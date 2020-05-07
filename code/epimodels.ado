@@ -11,6 +11,97 @@ program define simulate
 	`cmd' `0'
 end
 
+program define fitdlgsir
+	version 16.0
+	syntax , beta(real) gamma(real) ///
+	         betak(real) gammak(real) ///
+			 vsusceptible(string) vinfected(string) vrecovered(string) ///
+			 format(string)
+			 
+	if (`betak'==1) local pb "beta(`beta')"
+	else local pb "beta(.) beta0(`beta')"
+
+	if (`gammak'==1) local pg "gamma(`gamma')"
+	else local pg "gamma(.) gamma0(`gamma')"
+	
+	capture confirm number `vsusceptible'
+	if !_rc local ss "susceptible(`vsusceptible')"
+	else local ss "vsusceptible(`vsusceptible') susceptible(`=`vsusceptible'[1]')"
+	
+	capture confirm number `vinfected'
+	if !_rc local si "infected(`vinfected')"
+	else local si "vinfected(`vinfected') infected(`=`vinfected'[1]')"
+	
+	capture confirm number `vrecovered'
+	if !_rc local sr "recovered(`vrecovered')"
+	else local sr "vrecovered(`vrecovered') recovered(`=`vrecovered'[1]')"
+	
+	epimodels fit SIR , `pb' `pg' `ss' `si' `sr' format(`format')
+
+end
+
+program define fitdlgseir
+	version 16.0
+	syntax , beta(real) betak(real) ///
+	         gamma(real) gammak(real) ///
+			 sigma(real) sigmak(real) ///
+			 mu(real) muk(real) ///
+			 nu(real) nuk(real) ///
+			 vsusceptible(string) vexposed(string) ///
+			 vinfected(string) vrecovered(string) ///
+			 format(string)
+			 
+	if (`betak'==1) local pb "beta(`beta')"
+	else local pb "beta(.) beta0(`beta')"
+
+	if (`gammak'==1) local pg "gamma(`gamma')"
+	else local pg "gamma(.) gamma0(`gamma')"
+	
+	if (`sigmak'==1) local ps "sigma(`sigma')"
+	else local ps "sigma(.) sigma0(`sigma')"
+	
+	if (`muk'==1) local pm "mu(`mu')"
+	else local pm "mu(.) mu0(`mu')"
+	
+	if (`nuk'==1) local pn "nu(`nu')"
+	else local pn "nu(.) nu0(`nu')"
+	
+	capture confirm number `vsusceptible'
+	if !_rc {
+	  local ss "susceptible(`vsusceptible')"
+	}
+	else {
+	  local ss "vsusceptible(`vsusceptible') susceptible(`=`vsusceptible'[1]')"
+	}
+	
+	capture confirm number `vexposed'
+	if !_rc {
+	  local se "exposed(`vexposed')"
+	}
+	else {
+	  local se "vexposed(`vexposed') exposed(`=`vexposed'[1]')"
+	}
+	
+	capture confirm number `vinfected'
+	if !_rc {
+	  local si "infected(`vinfected')"
+	}
+	else {
+	  local si "vinfected(`vinfected') infected(`=`vinfected'[1]')"
+	}
+	
+	capture confirm number `vrecovered'
+	if !_rc {
+	  local sr "recovered(`vrecovered')"
+	}
+	else {
+	  local sr "vrecovered(`vrecovered') recovered(`=`vrecovered'[1]')"
+	}
+	
+	epimodels fit SEIR , `pb' `pg' `ps' `pm' `pn' `ss' `se' `si' `sr' format(`format')
+
+end
+
 program define fit, rclass
 
 	version 16.0
@@ -132,5 +223,9 @@ program define fit, rclass
 	return local modelcmd `"`modelname'"'
 	
 end	
+
+program define homepage
+    view browse www.radyakin.org/stata/epimodels/
+end
 
 // END OF FILE

@@ -89,6 +89,11 @@ program define ditable, rclass
 	local cwid = 14
 	local lmarg = 2
 	
+	forvalues i = 2/`:word count `varlabels'' {
+	    local vl `"`:word `i' of `varlabels''"'
+		local twid=max(strlen(`"`vl'"')+1,`twid')
+	}
+	
 	local twidth = `twid' + 3*(`cwid'+1)
 	local titlepos = `lmarg' + floor((`twidth'-strlen(`"`modeltitle'"'))/2)
 	if (`titlepos' < `lmarg') local titlepos=`lmarg'	

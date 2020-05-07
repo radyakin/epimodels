@@ -8,7 +8,7 @@ d KW: simulation
 d
 d Requires: Stata version 16.0 or newer
 d 
-d Distribution-Date: 20200427
+d Distribution-Date: 20200430
 d
 d Author: Sergiy Radyakin, Senior Economist,
 d         Development Economics Data Group, The World Bank
@@ -29,8 +29,10 @@ f epimodels_common_output.ihlp
 f epi_sir.ado
 f epi_sir.dlg
 f epi_sir.sthlp
+f epi_fit_sir.dlg
 * MODEL SEIR-specific
 f epi_seir.ado
 f epi_seir.dlg
 f epi_seir.sthlp
+f epi_fit_seir.dlg
 * END OF FILE

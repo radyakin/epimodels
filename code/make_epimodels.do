@@ -63,7 +63,6 @@ real matrix epimodels_seir_eq(real matrix x, real matrix parm) {
     return(r1,r2,r3,r4)
 }
 
-
 void function epimodels_seir(string scalar matname) {
     version `vers'
 	par_beta  = strtoreal(st_local("beta"))
@@ -88,7 +87,14 @@ void function epimodels_seir(string scalar matname) {
 }
 
 
-
+real epi_wordpos(string s1, string s2) {
+	version `vers'
+	T=tokens(s1)
+	for(w=1;w<=cols(T);w++) {
+	  if (T[w]==s2) return(w)
+	}
+	return(0)
+}
 
 
 real epi_sum2diff(string v1, string v2) {
@@ -100,7 +106,7 @@ real epi_sum2diff(string v1, string v2) {
 	st_view(V1,.,v1)
 	st_view(V2,.,v2)
 	D=V1-V2
-	for(i=1;rows(D);i++) {
+	for(i=1;i<=rows(D);i++) {
 	    if (D[i,1]==.) D[i,1]=0
 	}
 	sum=colsum(D:*D)
@@ -212,18 +218,44 @@ void epi_searchparams() {
 	epi_postendparams(x, model_params)
 }
 
-string epi_greek(string name) {
+string epi_greek(string line) {
     version `vers'
-	L = tokens("alpha beta gamma delta epsilon zeta eta theta iota kappa " + ///
-	 "lambda mu nu xi omicron pi rho sigma tau upsilon phi chi psi omega")
+	if (line=="") return("")
+	T=tokens(line)
+	R=""
+	Z=""
+	for(i=1;i<=cols(T);i++) {
+	  R=R+Z+epi_greek1(T[i])
+	  Z=" "
+	}
+	return(R)
+}
+
+string epi_greek1(string name) {
+    version `vers'
+
+	if (name=="") return("")
 	
-	for(i=1;i<=cols(L);i++) {
-	    if (L[i]==name) {
-		  return(uchar(944+i))
+	if (regexm(name,"[0-9]")>0) {
+		if (regexm(name,"^[a-z]+[0-9]+$")==0) {
+			printf("{error}Invalid greek: {%s}{break}", name)
+			exit(error(112))
 		}
 	}
 	
-	printf("{error: unknown letter: %s}", name)
+	english=regexr(name,"[0-9]+$","")
+	num=substr(name,strlen(english)+1,strlen(name)-strlen(english))
+
+	L = tokens("alpha beta gamma delta epsilon zeta eta theta iota kappa " + ///
+	 "lambda mu nu xi omicron pi rho ssigma sigma tau upsilon phi chi psi omega")
+	
+	for(i=1;i<=cols(L);i++) {
+	    if (L[i]==english) {
+		  return(uchar(944+i)+num)
+		}
+	}
+	
+	printf("{error: unknown letter: %s}{break}", name)
 }
 
 void epi_getmodelmeta(string model) {
@@ -284,9 +316,11 @@ mata mlib add lepimodels epi_getstartparams()
 mata mlib add lepimodels epi_postendparams()
 mata mlib add lepimodels epi_searchparams()
 mata mlib add lepimodels epi_greek()
+mata mlib add lepimodels epi_greek1()
 mata mlib add lepimodels epi_getmodelmeta()
 
 mata mlib add lepimodels epi_menu()
+mata mlib add lepimodels epi_wordpos()
 
 mata mlib index
 
