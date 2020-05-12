@@ -7,21 +7,33 @@ cd "..\code"
 
 mata 
 
-real matrix epimodels_rk4(pointer(real matrix function) scalar f, real matrix param, real stp, real matrix initc, real iters) {
+real matrix epimodels_rk4(pointer(real matrix function) scalar f, real matrix param, real mlt, real matrix initc, real iters) {
     version `vers'
 	res = initc
-	for(tt=1; tt<=iters; tt++) {
-	  prevVals = res[rows(res),2..cols(res)] 
-	  nextVals = (*f)( prevVals, param )
-	  k1 = stp :* nextVals
-	  k2 = stp :* (*f)(prevVals :+ (.5*k1),param)
-	  k3 = stp :* (*f)(prevVals :+ (.5*k2),param)
-	  k4 = stp :* (*f)(prevVals :+     k3, param)
-	  adjFactor = prevVals  :+ (1/6)*k1
-	  adjFactor = adjFactor :+ (1/3)*k2
-	  adjFactor = adjFactor :+ (1/3)*k3
-	  adjFactor = adjFactor :+ (1/6)*k4
-	  res = res \ (stp*tt, adjFactor)
+	
+	mltstr=strtrim(strofreal(mlt,"%20.4gc"))
+	if (mlt>10000) {
+	    printf("{break}Error! Too fine-grain simulation. Specified number of steps per day (%s) is too large.{break}",mltstr)
+	    exit(error(3300))
+	}
+	
+	stp=1/mlt
+	
+	for(t=0;t<iters;t++) {
+		for(j=1;j<=mlt;j++) {
+		  tt=t+stp*j
+		  prevVals = res[rows(res),2..cols(res)] 
+		  nextVals = (*f)( prevVals, param )
+		  k1 = stp :* nextVals
+		  k2 = stp :* (*f)(prevVals :+ (.5*k1),param)
+		  k3 = stp :* (*f)(prevVals :+ (.5*k2),param)
+		  k4 = stp :* (*f)(prevVals :+     k3, param)
+		  adjFactor = prevVals  :+ (1/6)*k1
+		  adjFactor = adjFactor :+ (1/3)*k2
+		  adjFactor = adjFactor :+ (1/3)*k3
+		  adjFactor = adjFactor :+ (1/6)*k4
+		  res = res \ (tt, adjFactor)
+		}
 	}
 	return(res)
 }
@@ -42,9 +54,8 @@ void function epimodels_sir(string scalar matname) {
 	ini_S = strtoreal(st_local("susceptible"))
 	ini_I = strtoreal(st_local("infected"))
 	ini_R = strtoreal(st_local("recovered"))
-	iters = strtoreal(st_local("iterations"))
-	// step=0.01 // step is disabled in this version
-	step=1
+	iters = strtoreal(st_local("days"))
+	step= strtoreal(st_local("steps"))
 
 	par=par_beta,par_gamma
 	ini=0,ini_S,ini_I,ini_R
@@ -74,9 +85,8 @@ void function epimodels_seir(string scalar matname) {
 	ini_E = strtoreal(st_local("exposed"))
 	ini_I = strtoreal(st_local("infected"))
 	ini_R = strtoreal(st_local("recovered"))
-	iters = strtoreal(st_local("iterations"))
-	// step=0.01 // step is disabled in this version
-	step=1
+	iters = strtoreal(st_local("days"))
+	step= strtoreal(st_local("steps"))
 
 	par=par_beta,par_gamma,par_sigma,par_mu,par_nu
 	ini=0,ini_S,ini_E,ini_I,ini_R

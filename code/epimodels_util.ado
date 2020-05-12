@@ -14,6 +14,30 @@ program define check_total_population
 	}
 end
 
+program define check_steps
+    version 16.0
+	syntax anything
+
+	capture confirm integer number `anything'
+	if (_rc) {
+		display as error "Number of simulation steps in each simulation day must be an integer number."
+		error 198
+	}
+	
+	capture assert (`anything' > 0)
+	if (_rc) {
+	    display as error "Number of simulation steps in each simulation day must be 1 or more."
+		error 198
+	}
+	
+	capture assert (`anything' <= 1e4)
+	if (_rc) {
+	    display as error "Number of simulation steps in each simulation day must be no more than 10000."
+		error 198
+	}
+end
+
+
 program define check_days
 	version 16.0
 	syntax anything
@@ -59,6 +83,8 @@ end
 
 program define ditable, rclass
 
+    version 16.0
+
 	syntax varname, ///
 	    days(real) [day0(string)] datefmt(string) ///
 	    [modeltitle(string)] mcolnames(string) indexi(real) ///
@@ -68,21 +94,22 @@ program define ditable, rclass
 	
 	quietly maxinfect `ivar' `varlist', ///
 	  day0(`"`day0'"') datefmt("`datefmt'") `percent'
-	  
-	local tstar=r(t_maxinfect)
+	
+	local max=r(maxinfect)
 	local dstar=r(d_maxinfect)
-		
-	local ttstar=`tstar'
-	if (`"`day0'"'!="") local ttstar=string(`tstar',"`datefmt'")
-	
+	local tstar=r(t_maxinfect)
+	local ostar=r(o_maxinfect)
+	local X=floor(t[`ostar'])
+	local last=_N
+
 	local title_t0 = "t0"
-	local title_tX = "t`dstar'"
+	local title_tX = "t`X'"
 	local title_t1 = "t`days'"
-	
+
 	if (`"`day0'"' != "") {
 	    local title_t0 = string(`varlist'[1], "`datefmt'")
 		local title_tX = string(`varlist'[`=`dstar'+1'], "`datefmt'")
-		local title_t1 = string(`varlist'[_N], "`datefmt'")		
+		local title_t1 = string(`varlist'[`last'], "`datefmt'")		
 	}
 	
 	local twid = 17
@@ -117,24 +144,41 @@ program define ditable, rclass
 	forvalues i = 2/`:word count `varlabels'' {
 	    local vl `"`:word `i' of `varlabels''"'
 		local vn `:word `i' of `mcolnames''
-	    .`tab'.row `"`vl'"' `=`vn'[1]' `=`vn'[`=`dstar'+1']' `=`vn'[`=`days'+1']'
+	    .`tab'.row `"`vl'"' `=`vn'[1]' `=`vn'[`=`dstar'+1']' `=`vn'[`last']'
 		local total_t0 = `total_t0' + `=`vn'[1]'
 		local total_tX = `total_tX' + `=`vn'[`=`dstar'+1']'
-		local total_t1 = `total_t1' + `=`vn'[`=`days'+1']'
+		local total_t1 = `total_t1' + `=`vn'[`last']'
 	}
 	.`tab'.sep, middle
 	.`tab'.row `"Total"' `total_t0' `total_tX' `total_t1'
 	.`tab'.sep, bottom
 	
-	epimodels_util maxinfect `ivar' `varlist', ///
-	  day0(`"`day0'"') datefmt("`datefmt'") `percent'
+	if (`"`day0'"'!="") {
+	  local specdate `"(`=string(`=`varlist'[`ostar']',`"`datefmt'"')') "'
+	  local specday =floor(t[`dstar']-t[1]+1)
+	}
+	else {
+	  local specday =floor(t[`ostar'])
+	}
 	
-	return scalar maxinfect=r(maxinfect)
-	return scalar t_maxinfect=r(t_maxinfect)
-	return scalar d_maxinfect=r(d_maxinfect)
+	local maxtext `"`=string(`=`max'',"%20.4gc")'"'
+	if (`"`percent'"'!="") local maxtext `"`maxtext'%"'
+	display as text "The maximum size of the infected group {result:`maxtext'} is reached on day {result:`specday' `specdate'}of the simulation."
+	
+	if (`ostar'==`last') {
+	    display as result "Warning! The peak is detected at the end of the simulation, and may change if you extend it."
+	}
+	display ""
+	
+	return scalar maxinfect= `max' 
+	return scalar t_maxinfect=`tstar' 
+	return scalar d_maxinfect=`dstar'
+	return scalar o_maxinfect=`ostar'
 end
 
 program define maxinfect, rclass
+
+    version 16.0
 	
 	syntax varlist, [day0(string) datefmt(string) percent]
 	
@@ -151,20 +195,8 @@ program define maxinfect, rclass
 	scalar `tmax' = r(min) // in case of multiple identical values pick the first one
 	quietly count if (`tvar' < `tmax')
     scalar `dmax' = `=r(N)'
-	
-	if (`"`day0'"'!="") {
-	  local specdate `"(`=string(`=`tvar'[`=`dmax'']',`"`datefmt'"')') "'
-	}
-	
-	local maxtext `"`=string(`=`max'',"%20.4gc")'"'
-	if (`"`percent'"'!="") local maxtext `"`maxtext'%"'
-	display as text "The maximum size of the infected group {result:`maxtext'} is reached on day {result:`=`dmax'' `specdate'}of the simulation."
-	
-	if (`=`dmax'' + 1 == _N) {
-	    display as result "Warning! The peak is detected at the end of the simulation, and may change if you extend it."
-	}
-	display ""
-		
+
+	return scalar o_maxinfect=`dmax'+1
 	return scalar t_maxinfect=`tmax'
 	return scalar d_maxinfect=`dmax'
 	return scalar maxinfect=`max'

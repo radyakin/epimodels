@@ -5,6 +5,9 @@
  simulations, value of 30 is applied if this parameter is omitted. The dialog entry is limited to 365. {p_end}
 {synopt :{opt day0(string)}}Optional date for beginning of the simulations 
 in the YYYY-MM-DD format, for example: 2020-02-29 {p_end}
+{synopt :{opt steps(#)}}Integer number of simulation steps to be
+undertaken within each day of simulation (1..1000). An error code 198 is issued if the number of simulation steps is non-integer or out of range. Default value is 1.{p_end}
+
 {synopt :{opt clear}}permits the data in memory to be cleared{p_end}
 {synopt :{opt percent}}indicates the model results should be reported as percentages as opposed to default reporting in absolute numbers.{p_end}
 

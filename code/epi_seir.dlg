@@ -83,6 +83,7 @@ BEGIN
 	   
 	   optionarg calc.sp_days
 	   optionarg calc.ed_day0
+	   optionarg calc.sp_steps
 	   option calc.ck_clear
 	   option calc.ck_percent
 	   

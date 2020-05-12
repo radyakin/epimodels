@@ -4,8 +4,9 @@ program define epi_sir, rclass
 
 	syntax , [beta(real 0.00) gamma(real 0.00) ///
 	         susceptible(real 0.00) infected(real 0.00) recovered(real 0.00) ///
-			 days(integer 30) day0(string) percent colormodel nograph clear ///
-			 newframe(string) *]
+			 days(real 30) day0(string) steps(real 1) percent ///
+			 colormodel nograph ///
+			 newframe(string) clear *]
 
 	local datefmt "%dCY-N-D"
 		
@@ -16,8 +17,8 @@ program define epi_sir, rclass
 	epimodels_util check_total_population `totpop'
 	epimodels_util check_day0_date `day0'
 	epimodels_util check_days `days'
+	epimodels_util check_steps `steps'
 	
-	local iterations= /*100* */ `days'
 	tempname M		 
 	mata epimodels_sir("`M'")
 
@@ -28,8 +29,7 @@ program define epi_sir, rclass
 
 	// todo: if {opt nodata} has been specified, do not put data to any dataset
 	// todo: if frame name has been specified, put the data into that frame
-	// todo: potentially calculate fully (with step 0.01), but report only the integer nodes.
-	// todo: expose the step
+	
 		
 	if (`"`percent'"'=="percent") {
 	  tempname Z
@@ -71,6 +71,8 @@ program define epi_sir, rclass
 	return scalar maxinfect=r(maxinfect)
 	return scalar t_maxinfect=r(t_maxinfect)
 	return scalar d_maxinfect=r(d_maxinfect)
+	return scalar o_maxinfect=r(o_maxinfect)
+	return local model_params="{&beta}=`beta', {&gamma}=`gamma'"
 
 	if (`"`graph'"'=="nograph") exit
 				

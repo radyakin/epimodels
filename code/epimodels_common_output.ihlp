@@ -11,15 +11,20 @@ option {opt percent} was specified, otherwise it is an absolute number
 of infected.{p_end}
 
 {phang}
-{opt r(d_maxinfect)} - this is the day of simulation on which the maximum 
-infected size was reached, and can take values 0, 1, 2, ....{p_end}
+{opt r(d_maxinfect)} - this is the step of simulation on which the maximum 
+infected size was reached, and can take values 0, 1, 2, .... If number of steps of simulation per day is 1, then this is also the day-number when the maximum infected size was reached. {p_end}
 
 {phang}
 {opt r(t_maxinfext)} - this is the same as {it:r(d_maxinfect)} if no option 
-{opt day0()} was specified, but if it was it takes the calendar date 
+{opt day0()} was specified and simulation steps per day is 1. But if the 
+{opt day0()} option was specified, then it takes the calendar date 
 (in Stata's date) format for the date where the maximum infected size 
 was reached. For example, a value {it:22025} will correspond to 
-{it:April 20, 2020}.{p_end}
+{it:April 20, 2020}. If the number of steps of simulation in more than 1 per day, expect this value to be non-integer.{p_end}
+
+{phang}
+{opt r(o_maxinfext)} - this is the observation number, in which maximum 
+infected size was reached.{p_end}
 
 {pstd}
 The simulation of the model steps is also saved into a matrix with the name 
