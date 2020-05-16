@@ -6,13 +6,15 @@ program define epi_sir, rclass
 	         susceptible(real 0.00) infected(real 0.00) recovered(real 0.00) ///
 			 days(real 30) day0(string) steps(real 1) percent ///
 			 colormodel nograph ///
-			 newframe(string) clear *]
-
-	local datefmt "%dCY-N-D"
-		
-	if (`"`colormodel'"'!="") local lc `"color(blue red green)"'			 
-			 
+			 newframe(string) pdfreport(string) clear *]
+	
 	local modeltitle = "SIR Model"
+	local mcolnames "t S I R"
+	local varlabels "Time Susceptible Infected Recovered"
+	local datefmt "%dCY-N-D"
+	local indexi = strpos(strupper(subinstr(`"`mcolnames'"', " ", "", .)),"I")		
+
+	if (`"`colormodel'"'!="") local lc `"color(blue red green)"'			 			 
 	local totpop = `susceptible' + `infected' + `recovered'
 	epimodels_util check_total_population `totpop'
 	epimodels_util check_day0_date `day0'
@@ -21,15 +23,9 @@ program define epi_sir, rclass
 	
 	tempname M		 
 	mata epimodels_sir("`M'")
-
-	local mcolnames "t S I R"
-	local varlabels "Time Susceptible Infected Recovered"
 	
-	local indexi = strpos(strupper(subinstr(`"`mcolnames'"', " ", "", .)),"I")
-
 	// todo: if {opt nodata} has been specified, do not put data to any dataset
 	// todo: if frame name has been specified, put the data into that frame
-	
 		
 	if (`"`percent'"'=="percent") {
 	  tempname Z
@@ -51,11 +47,7 @@ program define epi_sir, rclass
 	
 	`clear'
 	quietly svmat double `M', names(col)
-	
-	label variable t "Time, days"
-	label variable `:word 2 of `mcolnames'' "`:word 2 of `varlabels''"
-	label variable `:word 3 of `mcolnames'' "`:word 3 of `varlabels''"
-	label variable `:word 4 of `mcolnames'' "`:word 4 of `varlabels''"
+	mata epi_applylabels()
 	
 	epimodels_util makedatevar t, day0(`"`day0'"') datefmt("`datefmt'")
 	
@@ -73,14 +65,32 @@ program define epi_sir, rclass
 	return scalar d_maxinfect=r(d_maxinfect)
 	return scalar o_maxinfect=r(o_maxinfect)
 	return local model_params="{&beta}=`beta', {&gamma}=`gamma'"
+	mata st_local("greek",epi_greek("beta = `beta', gamma = `gamma'"))
+	local greek=subinstr(`"`greek'"'," = ","=",.)	
+	return local umodel_params="`greek'"
 
-	if (`"`graph'"'=="nograph") exit
-				
-	twoway line `:word 2 of `mcolnames'' `:word 3 of `mcolnames'' ///
-	            `:word 4 of `mcolnames'' t, ///
-	   legend(cols(1) ring(0) pos(2) region(lwidth(none) )) ///
-	   xtitle("`:variable label t'") ytitle(`"`ylabel'"') ///
-	   title(`"`modeltitle'"') `yf' `lc' xlabel(, grid) `options'
+	if (`"`graph'"'!="nograph") {
+		twoway line `:word 2 of `mcolnames'' `:word 3 of `mcolnames'' ///
+					`:word 4 of `mcolnames'' t, ///
+		   legend(cols(1) ring(0) pos(2) region(lwidth(none) )) ///
+		   xtitle("`:variable label t'") ytitle(`"`ylabel'"') ///
+		   title(`"`modeltitle'"') `yf' `lc' xlabel(, grid) `options'
+	    if (`"`pdfreport'"'!="") {
+			tempfile modelimg
+			local modelimg `"`modelimg'.png"'
+			graph export `"`modelimg'"', as(png)
+	    }
+	}
+	
+	if (`"`pdfreport'"'!="") {
+		capture noisily epimodels_util pdfreport `mcolnames', ///
+			modelname("SIR") modelparams("`greek'") ///
+			modelgraph(`"`modelimg'"') save("`pdfreport'")
+		local rc=_rc
+		
+		if (`"`modelimg'"'!="") capture erase `"`modelimg'"'
+		error `rc'
+	}
 end
 
 // END OF FILE

@@ -2,10 +2,17 @@
 clear all
 local vers "16.0"
 version `vers'
+local compdate "`c(current_date)'"
 
 cd "..\code"
 
 mata 
+
+real matrix epimodels_about() {
+    st_local("compile_date", "`compdate'")
+	st_local("compile_version", "`vers'")
+	st_local("epimodels_version", "2.0.1")
+}
 
 real matrix epimodels_rk4(pointer(real matrix function) scalar f, real matrix param, real mlt, real matrix initc, real iters) {
     version `vers'
@@ -248,6 +255,7 @@ string epi_greek1(string name) {
 	
 	if (regexm(name,"[0-9]")>0) {
 		if (regexm(name,"^[a-z]+[0-9]+$")==0) {
+		    return(name)
 			printf("{error}Invalid greek: {%s}{break}", name)
 			exit(error(112))
 		}
@@ -265,7 +273,8 @@ string epi_greek1(string name) {
 		}
 	}
 	
-	printf("{error: unknown letter: %s}{break}", name)
+	// printf("{error: unknown letter: %s}{break}", name)
+	return(name)
 }
 
 void epi_getmodelmeta(string model) {
@@ -310,8 +319,21 @@ void epi_menu() {
 	stata(`"window menu refresh"')
 }
 
+void epi_applylabels() {
+    st_varlabel("t","Time, days")
+	vars=tokens(st_local("mcolnames"))
+	labs=tokens(st_local("varlabels"))
+	for(v=2;v<=cols(vars);v++) {
+	  st_varlabel(vars[v],labs[v])
+	}
+}
+
 
 mata mlib create lepimodels, replace
+
+mata mlib add lepimodels epimodels_about()
+mata mlib add lepimodels epi_applylabels()
+
 mata mlib add lepimodels epimodels_rk4()
 mata mlib add lepimodels epimodels_sir_eq()
 mata mlib add lepimodels epimodels_sir()

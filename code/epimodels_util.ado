@@ -202,4 +202,54 @@ program define maxinfect, rclass
 	return scalar maxinfect=`max'
 end
 
+program define pdfreport
+	syntax varlist, modelname(string) modelparams(string) [modelgraph(string)] save(string)
+
+	if (strlen(`"`modelparams'"')>40) local br `"`=char(10)'"'
+	
+	mata epimodels_about()
+
+	putpdf begin
+	putpdf paragraph 
+	putpdf text ("EPIMODELS Report"), bold font("Helvetica",28,steelblue)
+	putpdf paragraph 
+	putpdf text ("This report was generated on `c(current_date)'"), font("Helvetica",16,steelblue)
+	putpdf paragraph 
+	putpdf text ("`modelname' model with parameters:`br'`modelparams'."), bold
+	
+	capture findfile "epimodels_eq_`modelname'.png"
+	if !_rc {
+	    // model with equations
+		putpdf paragraph 
+		putpdf text ("          ")	
+		putpdf image "`=r(fn)'" , width(4)    // todo: instream this??
+    }
+	if (`"`modelgraph'"'!="") {
+		putpdf paragraph 
+		putpdf image `"`modelgraph'"'
+	}
+	
+	putpdf paragraph
+	putpdf text ("Generated with EPIMODELS version `epimodels_version' from `compile_date' built for Stata v`compile_version'"), font("Helvetica",12,steelblue)
+	putpdf paragraph 
+	putpdf text ("For more information, visit EPIMODELS' homepage: http://www.radyakin.org/stata/epimodels/"), font("Helvetica",12,steelblue)
+	putpdf pagebreak
+	putpdf paragraph , halign(center)
+	putpdf text ("Simulation results"), font("Helvetica",28,steelblue)
+	putpdf table t=data(*), varnames
+	putpdf table t(.,.), halign(center) valign(center) nformat(%12.0fc) font("Consolas",8)
+	putpdf table t(1,.), bgcolor("aliceblue")
+	putpdf paragraph
+	/*
+	putpdf text ("t: Time`=char(10)'S: Susceptible`=char(10)'Z: Asympt. inf. that will not require hospitalization`=char(10)'I: Asympt. inf. that will need hospitalization eventually`=char(10)'H: Hospitalized not in intensive care`=char(10)'R: Recovered`=char(10)'RT: Removed temporarily`=char(10)'C: Intensive care`=char(10)'D: Dead")*/
+	
+	foreach v in `varlist' {
+		putpdf text ("`v': `:variable label `v''`=char(10)'")
+	}	
+
+	putpdf save `"`save'"' , replace
+
+end
+
+
 // END OF FILE

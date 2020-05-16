@@ -22,7 +22,18 @@ assert(epi_greek("beta")=="β")
 assert(epi_greek("beta2")=="β2")
 assert(epi_greek("rho32")=="ρ32")
 assert(epi_greek("beta2   rho32 delta0")=="β2 ρ32 δ0")
+
+assert(epi_greek("2")=="2")
+assert(epi_greek("23")=="23")
+assert(epi_greek("2delta3")=="2delta3")
+
 end
+
+
+/*
+
+// These test are no longer valid. 
+// The new behavior is: for non-convertible items, return the item itself.
 
 capture mata epi_greek("2")
 assert _rc==112
@@ -32,5 +43,6 @@ assert _rc==112
 
 capture mata epi_greek("2delta3")
 assert _rc==112
+*/
 
 // END OF TEST FILE
