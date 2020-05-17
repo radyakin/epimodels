@@ -240,8 +240,6 @@ program define pdfreport
 	putpdf table t(.,.), halign(center) valign(center) nformat(%12.0fc) font("Consolas",8)
 	putpdf table t(1,.), bgcolor("aliceblue")
 	putpdf paragraph
-	/*
-	putpdf text ("t: Time`=char(10)'S: Susceptible`=char(10)'Z: Asympt. inf. that will not require hospitalization`=char(10)'I: Asympt. inf. that will need hospitalization eventually`=char(10)'H: Hospitalized not in intensive care`=char(10)'R: Recovered`=char(10)'RT: Removed temporarily`=char(10)'C: Intensive care`=char(10)'D: Dead")*/
 	
 	foreach v in `varlist' {
 		putpdf text ("`v': `:variable label `v''`=char(10)'")
