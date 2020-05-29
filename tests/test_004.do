@@ -3,6 +3,7 @@
 // =====================================================================================
 
 clear all
+mata mata mlib index
 set seed 12345678
 
 program define CreateBenchmarkData

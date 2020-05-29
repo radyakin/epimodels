@@ -210,6 +210,21 @@ with values of parameters modified by the policy. The full code is shown in this
 </div>
 
 
+<div data-role="collapsible">
+<h4>Sensitivity of key indicators</h4>
+<p>In this example we look at how the day of the peak infected and the maximum 
+number of infected are sensitive to the value of the parameter beta.</p>
+    <CENTER><IMG src="images/demo6_sir_sensitivity_beta.svg"></CENTER>
+    <PRE> do "https://raw.githubusercontent.com/radyakin/epimodels/master/demo/demo6.do"</PRE>
+<P>The strategy here is to do a simulation for a given value of gamma (0.25 in this example)
+and varying beta, accumulating the critical results returned by the model after every run. Then
+plotting just those accumulated results. The full code is shown in this 
+<A href="https://raw.githubusercontent.com/radyakin/epimodels/master/demo/demo6.do">example</A>.</P>
+<P>Note also that while beta remains smaller than gamma, the highest number of infected is the initial
+number (10), and so the day of the peak is 0.</P>
+</div>
+
+
 </div>
 
 

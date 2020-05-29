@@ -20,12 +20,6 @@ BEGIN
 		   tooltip("GAMMA")
   CHECKBOX cb_gamma       300  @  100 ., label("Known value") option(gammak)
 
-  TEXT     tx_sigma       10 +25  390 ., label("Sigma:")		   
-  EDIT     ed_sigma       150  @  100 ., ///
-           numonly option(sigma) default(0.5) ///
-           tooltip("SIGMA")
-  CHECKBOX cb_sigma       300  @  100 ., label("Known value") option(sigmak)
-
 END
 
 OK ok1,      label("OK")
