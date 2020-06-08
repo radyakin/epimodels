@@ -87,11 +87,9 @@ program define ditable, rclass
 
 	syntax varname, ///
 	    days(real) [day0(string)] datefmt(string) ///
-	    [modeltitle(string)] mcolnames(string) indexi(real) ///
+	    [modeltitle(string)] mcolnames(string) ivar(string) ///
 		varlabels(string) ylabel(string) [digits(real 2) comma(string) percent]
 
-	local ivar `"`:word `indexi' of `mcolnames''"'
-	
 	quietly maxinfect `ivar' `varlist', ///
 	  day0(`"`day0'"') datefmt("`datefmt'") `percent'
 	
@@ -203,7 +201,9 @@ program define maxinfect, rclass
 end
 
 program define pdfreport
-	syntax varlist, modelname(string) modelparams(string) [modelgraph(string)] save(string)
+	syntax [varlist(default=none)], modelname(string) modelparams(string) ///
+	                [modelgraph(string)] [appendixgraphs(string)] ///
+					save(string)
 
 	if (strlen(`"`modelparams'"')>40) local br `"`=char(10)'"'
 	
@@ -236,15 +236,32 @@ program define pdfreport
 	putpdf pagebreak
 	putpdf paragraph , halign(center)
 	putpdf text ("Simulation results"), font("Helvetica",28,steelblue)
-	putpdf table t=data(*), varnames
-	putpdf table t(.,.), halign(center) valign(center) nformat(%12.0fc) font("Consolas",8)
-	putpdf table t(1,.), bgcolor("aliceblue")
-	putpdf paragraph
+	
+	if (`"`varlist'"'!="") {
+		putpdf table t=data(`varlist'), varnames
+		putpdf table t(.,.), halign(center) valign(center) nformat(%12.0fc) font("Consolas",8)
+		putpdf table t(1,.), bgcolor("aliceblue")
+		putpdf paragraph
+	}
 	
 	foreach v in `varlist' {
 		putpdf text ("`v': `:variable label `v''`=char(10)'")
 	}	
-
+	
+	// optional appendix
+	if (`"`appendixgraphs'"'!="") {
+	    putpdf sectionbreak, landscape
+		local first=1
+	    foreach f in `appendixgraphs' {
+		    if (!`first') {
+			    putpdf pagebreak
+				local first=0
+		    }
+			putpdf paragraph 
+			putpdf image `"`f'"'
+		}
+	}
+	
 	putpdf save `"`save'"' , replace
 
 end

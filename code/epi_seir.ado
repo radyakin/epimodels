@@ -56,11 +56,13 @@ program define epi_seir, rclass
 
 	return matrix seir=`M'
 	
+	local ivar `"`:word `indexi' of `mcolnames''"'
+	
 	epimodels_util ditable t, ///
 	    days(`days') day0(`"`day0'"') ///
 		modeltitle(`"`modeltitle'"') ///
 		varlabels(`"`varlabels'"') ylabel(`"`ylabel'"') ///
-        mcolnames(`"`mcolnames'"') indexi(`indexi') ///
+        mcolnames(`"`mcolnames'"') ivar(`ivar') ///
 		datefmt(`"`datefmt'"') digits(`digits') comma(`tc') `percent'		
 
 	return scalar maxinfect=r(maxinfect)

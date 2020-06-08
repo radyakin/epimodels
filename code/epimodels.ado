@@ -6,7 +6,6 @@ end
 program define simulate
 	version 16.0
 	gettoken model 0 : 0
-	display `"`model'"'
 	local cmd = "epi_"+strlower(`"`model'"')
 	`cmd' `0'
 end

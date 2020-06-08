@@ -52,13 +52,15 @@ program define epi_sir, rclass
 	epimodels_util makedatevar t, day0(`"`day0'"') datefmt("`datefmt'")
 	
 	return matrix sir=`M'
+	
+	local ivar `"`:word `indexi' of `mcolnames''"'
 
 	epimodels_util ditable t, ///
 	    days(`days') day0(`"`day0'"') ///
 		modeltitle(`"`modeltitle'"') ylabel(`"`ylabel'"') ///
         datefmt(`"`datefmt'"') digits(`digits') comma(`tc') ///
         mcolnames(`"`mcolnames'"') varlabels(`"`varlabels'"') ///
-		indexi(`indexi') `percent'
+		ivar(`ivar') `percent'
 		
 	return scalar maxinfect=r(maxinfect)
 	return scalar t_maxinfect=r(t_maxinfect)
