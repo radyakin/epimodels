@@ -201,6 +201,9 @@ program define maxinfect, rclass
 end
 
 program define pdfreport
+
+	version 16.0
+	
 	syntax [varlist(default=none)], modelname(string) modelparams(string) ///
 	                [modelgraph(string)] [appendixgraphs(string)] ///
 					save(string)
@@ -266,5 +269,40 @@ program define pdfreport
 
 end
 
+program define popmatrix, rclass
+	
+	version 16.0
+	
+	syntax , agevar(varname) sexvar(varname) at(numlist) ///
+	         [malecode(integer 1) femalecode(integer 2)]
+	
+	assert !missing(`agevar')
+	assert !missing(`sexvar')
+	assert (`malecode'!=`femalecode')
+	local cc=subinstr(`"`at'"',","," ",.)
+	local NG `: word count `cc''
+	
+	tempvar agegrp sexgrp
+	quietly egen `agegrp'=cut(`agevar'), at(`at')
+	quietly recode `sexvar' (`malecode'=1) (`femalecode'=2) , generate(`sexgrp')
+	
+	local N=_N
+	local rn ""
+	tempname M
+	matrix `M' = J(`=`NG'-1',2,.)
+	forval i=1/`=`NG'-1' {
+	  local v1 =`: word `i' of `cc''
+      local v2 =`: word `=`i'+1' of `cc''-1
+	  local rn `"`rn' "`v1'-`v2'""'
+      forval s=1/2 {
+		quietly count if `agegrp'==`v1' & `sexgrp'==`s'
+		local n=r(N)
+		matrix `M'[`i',`s']=`n'/`N'
+	  }
+	}
+	matrix colnames `M' = "Males" "Females"
+	matrix rownames `M' = `rn'
+	return matrix F=`M'
+end
 
 // END OF FILE
