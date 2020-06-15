@@ -11,7 +11,7 @@ mata
 real matrix epimodels_about() {
     st_local("compile_date", "`compdate'")
 	st_local("compile_version", "`vers'")
-	st_local("epimodels_version", "2.0.1")
+	st_local("epimodels_version", "2.0.2")
 }
 
 real matrix epimodels_rk4(pointer(real matrix function) scalar f, real matrix param, real mlt, real matrix initc, real iters) {

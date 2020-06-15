@@ -303,6 +303,7 @@ program define popmatrix, rclass
 	matrix colnames `M' = "Males" "Females"
 	matrix rownames `M' = `rn'
 	return matrix F=`M'
+	return local N=_N
 end
 
 // END OF FILE
