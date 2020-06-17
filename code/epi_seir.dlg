@@ -86,6 +86,7 @@ BEGIN
 	   optionarg calc.sp_steps
 	   option calc.ck_clear
 	   option calc.ck_percent
+	   optionarg calc.fi_report
 	   
 	   option graph.ck_nogr
 	   optionarg graph.cb_scheme

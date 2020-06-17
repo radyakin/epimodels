@@ -45,7 +45,12 @@ numbers, and lower case if they represent shares (if option {opt percent}
 was specified). The time variable {it:t} is always lower case.{p_end}
 
 {pstd}
-Finally, the model simulation command will build a graph plotting the 
+The model simulation command will build a graph plotting the 
 trajectories of all the model componets over the simulation time frame. 
 This graph can be suppressed by specifying an option {opt nograph} or it 
 can be adjusted by specifying common twoway graphing options.{p_end}
+
+{pstd}
+Finally, a report can be created as a file if the {opt pdfreport()} is specified.
+The report file is always replaced.
+{p_end}

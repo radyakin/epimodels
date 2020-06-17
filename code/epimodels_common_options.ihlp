@@ -10,6 +10,7 @@ undertaken within each day of simulation (1..1000). An error code 198 is issued 
 
 {synopt :{opt clear}}permits the data in memory to be cleared{p_end}
 {synopt :{opt percent}}indicates the model results should be reported as percentages as opposed to default reporting in absolute numbers.{p_end}
+{synopt :{opt pdfreport(filename.pdf)}}optional name of a report file to be saved as PDF.{p_end}
 
 {syntab :Graphing}
 {synopt :{opt nograph}}suppress graph{p_end}

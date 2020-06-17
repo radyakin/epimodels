@@ -1,6 +1,7 @@
 clear all
 adopath ++ "..\code\"
 cd "..\tests\"
+mata mata mlib index
 
 do "test_001.do"
 do "test_002.do"

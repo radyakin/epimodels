@@ -85,7 +85,7 @@ program define epi_seir, rclass
 		if (`"`pdfreport'"'!="") {
 			tempfile modelimg
 			local modelimg `"`modelimg'.png"'
-			graph export `"`modelimg'"', as(png)
+			quietly graph export `"`modelimg'"', as(png)
 	    }	   
 	}
 	

@@ -22,5 +22,11 @@ CHECKBOX ck_clear      @       +30     @       .,              ///
 CHECKBOX ck_percent      @       +30     @       .,              ///
         label("Report model results as percentages")                      ///
         option(percent) 
+
+TEXT tx_report     10 +25 390 ., label("Filename for report in PDF:")  
+FILE fi_report     10 +20 390 ., label("Browse ...") ///
+       save dialogtitle("Specify filename for saving the report in PDF") ///
+	   filter("PDF documents|*.pdf|All Files|*.*") option(pdfreport) ///
+	   tooltip("Optionally specify filename for saving the report in PDF")
 		
 END
