@@ -88,7 +88,8 @@ program define ditable, rclass
 	syntax varname, ///
 	    days(real) [day0(string)] datefmt(string) ///
 	    [modeltitle(string)] mcolnames(string) ivar(string) ///
-		varlabels(string) ylabel(string) [digits(real 2) comma(string) percent]
+		varlabels(string) ylabel(string) ///
+		[digits(real 2) comma(string) stdev percent]
 
 	quietly maxinfect `ivar' `varlist', ///
 	  day0(`"`day0'"') datefmt("`datefmt'") `percent'
@@ -114,25 +115,36 @@ program define ditable, rclass
 	local cwid = 14
 	local lmarg = 2
 	
+	local numcol=3
+	
 	forvalues i = 2/`:word count `varlabels'' {
 	    local vl `"`:word `i' of `varlabels''"'
 		local twid=max(strlen(`"`vl'"')+1,`twid')
 	}
 	
-	local twidth = `twid' + 3*(`cwid'+1)
+	local twidth = `twid' + `numcol'*(`cwid'+1)
 	local titlepos = `lmarg' + floor((`twidth'-strlen(`"`modeltitle'"'))/2)
 	if (`titlepos' < `lmarg') local titlepos=`lmarg'	
 	local titleoffset=`"_col(`=`titlepos'+1')"'
 	
+	local num_w ""
+	local num_t ""
+	local num_f ""
+	forval i=1/`numcol' {
+	  local num_w =`"`num_w' `cwid'"'
+	  local num_t =`"`num_t' %`cwid's"'
+	  local num_f = `"`num_f' %`cwid'.`digits'f`comma'"'
+	}
+	
 	display ""
     display `titleoffset' "`modeltitle'"
     tempname tab
-	.`tab' = ._tab.new, col(4) lmarg(`lmarg') commas
-	.`tab'.width    `twid' | `cwid' `cwid' `cwid'
-	.`tab'.titlefmt .   %`cwid's   %`cwid's %`cwid's
-	.`tab'.numfmt   .   %`cwid'.`digits'f`comma'  %`cwid'.`digits'f`comma' %`cwid'.`digits'f`comma'
+	.`tab' = ._tab.new, col(`=`numcol'+1') lmarg(`lmarg') commas
+	.`tab'.width    `twid' | `num_w'
+	.`tab'.titlefmt   .      `num_t'
+	.`tab'.numfmt     .      `num_f'
 	.`tab'.sep, top
-	.`tab'.titles `"`ylabel'"' "`title_t0'" "`title_tX'" "`title_t1'"
+	.`tab'.titles `"`ylabel'"' "`title_t0'" "`title_tX'" "`title_t1'" 
 	.`tab'.sep, mid
 
 	local total_t0 = 0
@@ -142,10 +154,14 @@ program define ditable, rclass
 	forvalues i = 2/`:word count `varlabels'' {
 	    local vl `"`:word `i' of `varlabels''"'
 		local vn `:word `i' of `mcolnames''
-	    .`tab'.row `"`vl'"' `=`vn'[1]' `=`vn'[`=`dstar'+1']' `=`vn'[`last']'
+		.`tab'.row `"`vl'"' `=`vn'[1]' `=`vn'[`=`dstar'+1']' `=`vn'[`last']'
+		if (!missing("`stdev'")) {
+		  .`tab'.row `"(s.d.)"' `=SD_`vn'[1]' `=SD_`vn'[`=`dstar'+1']' `=SD_`vn'[`last']'
+		}
 		local total_t0 = `total_t0' + `=`vn'[1]'
 		local total_tX = `total_tX' + `=`vn'[`=`dstar'+1']'
 		local total_t1 = `total_t1' + `=`vn'[`last']'
+		if (`i'!=`:word count `varlabels'') .`tab'.sep, middle
 	}
 	.`tab'.sep, middle
 	.`tab'.row `"Total"' `total_t0' `total_tX' `total_t1'
