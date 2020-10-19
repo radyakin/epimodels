@@ -155,13 +155,14 @@ program define ditable, rclass
 	    local vl `"`:word `i' of `varlabels''"'
 		local vn `:word `i' of `mcolnames''
 		.`tab'.row `"`vl'"' `=`vn'[1]' `=`vn'[`=`dstar'+1']' `=`vn'[`last']'
-		if (!missing("`stdev'")) {
-		  .`tab'.row `"(s.d.)"' `=SD_`vn'[1]' `=SD_`vn'[`=`dstar'+1']' `=SD_`vn'[`last']'
-		}
+		
 		local total_t0 = `total_t0' + `=`vn'[1]'
 		local total_tX = `total_tX' + `=`vn'[`=`dstar'+1']'
 		local total_t1 = `total_t1' + `=`vn'[`last']'
-		if (`i'!=`:word count `varlabels'') .`tab'.sep, middle
+		if (!missing("`stdev'")) {
+		  .`tab'.row `"(s.d.)"' `=SD_`vn'[1]' `=SD_`vn'[`=`dstar'+1']' `=SD_`vn'[`last']'
+		  if (`i'!=`:word count `varlabels'') .`tab'.sep, middle
+		}		
 	}
 	.`tab'.sep, middle
 	.`tab'.row `"Total"' `total_t0' `total_tX' `total_t1'

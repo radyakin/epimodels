@@ -101,18 +101,5 @@ data in memory (if any).{p_end}
 {pstd}Same as above, but with plotting of the graph and indicating that day zero 
 of the simulation corresponds to February 29, 2020.{p_end}
 
-{title:Authors}
+INCLUDE help epimodels_footer
 
-{phang}
-{it:Sergiy Radyakin}, The World Bank
-{p_end}
-
-{phang}
-{it:Paolo Verme}, The World Bank
-{p_end}
-
-{title:Also see}
-
-{psee}
-Online: {browse "http://www.radyakin.org/stata/epimodels/": epimodels homepage}
-{p_end}

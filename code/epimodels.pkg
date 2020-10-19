@@ -1,6 +1,6 @@
 v 3
 d 'epimodels': epidemiology models and simulations
-d by Sergiy Radyakin, Paolo Verme
+d by Carlos M Hernandez-Suarez, Sergiy Radyakin, Paolo Verme
 d
 d KW: epidemiology
 d KW: virus
@@ -8,9 +8,11 @@ d KW: simulation
 d
 d Requires: Stata version 16.0 or newer
 d 
-d Distribution-Date: 20200503
+d Distribution-Date: 20201001
 d
-d Author: Sergiy Radyakin, Senior Economist,
+d Author: Carlos M Hernandez-Suarez, Professor,
+          Universidad de Colima, Mexico
+d         Sergiy Radyakin, Senior Economist,
 d         Development Economics Data Group, The World Bank
 d	  Paolo Verme,
 d         Fragility, Conflict and Violence, The World Bank
@@ -35,4 +37,9 @@ f epi_seir.ado
 f epi_seir.dlg
 f epi_seir.sthlp
 f epi_fit_seir.dlg
+* MODEL SIZ-specific
+f epi_siz.ado
+f epi_siz.dlg
+f epi_siz.sthlp
+* f epi_fit_siz.dlg - not implemented
 * END OF FILE

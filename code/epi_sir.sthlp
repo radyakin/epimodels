@@ -100,19 +100,5 @@ theory of epidemics, part i. Proceedings of the Royal Society of Edinburgh. Sect
 {pstd}
 The SIR Model for Spread of Disease. Mathematical Association of America. {browse "https://www.maa.org/press/periodicals/loci/joma/the-sir-model-for-spread-of-disease-the-differential-equation-model": online}{p_end}
 
-
-{title:Authors}
-
-{phang}
-{it:Sergiy Radyakin}, The World Bank
-{p_end}
-
-{phang}
-{it:Paolo Verme}, The World Bank
-{p_end}
-
-{title:Also see}
-
-{psee}
-Online: {browse "http://www.radyakin.org/stata/epimodels/": epimodels homepage}
+INCLUDE help epimodels_footer
 

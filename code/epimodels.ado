@@ -108,6 +108,12 @@ program define fit, rclass
 	syntax anything, [*]
 	
 	local anything=strupper(`"`anything'"')
+	
+	if (`"`anything'"'=="SIZ") {
+	    display as error "Not implemented"
+		error 1111
+	}
+	
 	mata epi_getmodelmeta("")
 	assert(strpos(" `models_known' "," `anything' ")>0)
 	local modelname=strlower("epi_`anything'")

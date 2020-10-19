@@ -1,0 +1,154 @@
+VERSION 16.0
+
+//POSITION . . 410 250
+POSITION . . 410 470
+
+DIALOG params, label("seir - SIZ model") tabtitle("Model parameters")
+BEGIN
+		   
+  TEXT     tx_lambda      10  10  390  ., label("Lambda:")		   
+  EDIT     ed_lambda     @       +20     @       .,              ///
+        numonly option(lambda) default(0.27) ///
+		tooltip("")
+
+  TEXT     tx_theta      10  +25  390  ., label("Theta:")		   
+  EDIT     ed_theta     @       +20     @       .,              ///
+        numonly option(theta) default(.01) ///
+		tooltip("")
+		
+  TEXT     tx_alpha      10  +25  390  ., label("Alpha:")		   
+  EDIT     ed_alpha     @       +20     @       .,              ///
+        numonly option(alpha) default(0.25)	///
+		tooltip("")
+
+  TEXT     tx_mu1      10  +25  390  ., label("Mu1:")		   
+  EDIT     ed_mu1     @       +20     @       .,              ///
+        numonly option(mu1) default(.0625) ///
+		tooltip("")
+
+  TEXT     tx_mu2      10  +25  390  ., label("Mu2:")		   
+  EDIT     ed_mu2     @       +20     @       .,              ///
+        numonly option(mu2) default(0.2) ///
+		tooltip("")
+
+  TEXT     tx_mu3      10  +25  390  ., label("Mu3:")		   
+  EDIT     ed_mu3     @       +20     @       .,              ///
+        numonly option(mu3) default(0.125) ///
+		tooltip("")
+
+  TEXT     tx_mu4      10  +25  390  ., label("Mu4:")		   
+  EDIT     ed_mu4     @       +20     @       .,              ///
+        numonly option(mu4) default(0.2) ///
+		tooltip("")
+
+  TEXT     tx_pi      10  +25  390  ., label("Pi:")		   
+  EDIT     ed_pi     @       +20     @       .,              ///
+        numonly option(pi) default(0.0172) ///
+		tooltip("")
+
+  TEXT     tx_psi      10  +25  390  ., label("Psi:")		   
+  EDIT     ed_psi     @       +20     @       .,              ///
+        numonly option(psi) default(0.25) ///
+		tooltip("")
+
+  TEXT     tx_omega      10  +25  390  ., label("Omega:")		   
+  EDIT     ed_omega     @       +20     @       .,              ///
+        numonly option(omega) default(0.67) ///
+		tooltip("")
+		
+END
+
+OK ok1,      label("OK")
+CANCEL can1, label("Cancel")
+SUBMIT sub1, label("Submit")
+HELP hlp1,   view("help seir")
+RESET res1
+COPY copy1
+
+
+DIALOG inicond, tabtitle("Initial conditions")
+BEGIN
+  TEXT     tx_pops      10  10  390  ., label("S")		   
+  EDIT     ed_pops     @       +20     @       .,              ///
+        numonly option(pops) default(100000) ///
+		tooltip("Susceptible")
+
+  TEXT     tx_popz      10  +25  390  ., label("Z")		   
+  EDIT     ed_popz     @       +20     @       .,              ///
+        numonly option(popz)  default(1)		///
+		tooltip("Asympt. inf. that will not require hospitalization")
+
+  TEXT     tx_popi      10  +25  390  ., label("I")		   
+  EDIT     ed_popi     @       +20     @       .,              ///
+        numonly option(popi)  default(0)		///
+		tooltip("Sympt. inf. that will need hospitalization eventually")
+
+  TEXT     tx_poph      10  +25  390  ., label("H")		   
+  EDIT     ed_poph     @       +20     @       .,              ///
+        numonly option(poph)  default(0)		///
+		tooltip("Hospitalized not in intensive care")
+
+  TEXT     tx_popr      10  +25  390  ., label("R")		   
+  EDIT     ed_popr     @       +20     @       .,              ///
+        numonly option(popr)  default(0)		///
+		tooltip("Recovered")
+
+  TEXT     tx_poprt      10  +25  390  ., label("RT")		   
+  EDIT     ed_poprt     @       +20     @       .,              ///
+        numonly option(poprt)  default(0)		///
+		tooltip("Removed temporarily")
+
+  TEXT     tx_popc      10  +25  390  ., label("C")		   
+  EDIT     ed_popc     @       +20     @       .,              ///
+        numonly option(popc)  default(0)		///
+		tooltip("Intensive care")
+
+  TEXT     tx_popd      10  +25  390  ., label("D")		   
+  EDIT     ed_popd     @       +20     @       .,              ///
+        numonly option(popd)  default(0)		///
+		tooltip("Dead")
+
+END
+
+INCLUDE epimodels_calc
+INCLUDE epimodels_graph
+
+PROGRAM command
+BEGIN
+    put "epi_siz "
+	beginoptions
+	   optionarg params.ed_lambda
+	   optionarg params.ed_theta
+	   optionarg params.ed_alpha
+	   optionarg params.ed_mu1
+	   optionarg params.ed_mu2
+	   optionarg params.ed_mu3
+	   optionarg params.ed_mu4
+	   optionarg params.ed_pi
+	   optionarg params.ed_psi
+	   optionarg params.ed_omega
+	   
+	   
+	   optionarg inicond.ed_pops
+	   optionarg inicond.ed_popz
+	   optionarg inicond.ed_popi
+	   optionarg inicond.ed_popr
+	   optionarg inicond.ed_poprt
+	   optionarg inicond.ed_poph
+	   optionarg inicond.ed_popc
+	   optionarg inicond.ed_popd
+	   
+	   optionarg calc.sp_days
+	   optionarg calc.ed_day0
+	   optionarg calc.sp_steps
+	   option calc.ck_clear
+	   option calc.ck_percent
+	   optionarg calc.fi_report
+	   
+	   option graph.ck_nogr
+	   optionarg graph.cb_scheme
+	   option graph.ck_colmodel
+	endoptions
+END
+
+// END OF FILE

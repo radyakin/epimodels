@@ -14,7 +14,7 @@ undertaken within each day of simulation (1..1000). An error code 198 is issued 
 
 {syntab :Graphing}
 {synopt :{opt nograph}}suppress graph{p_end}
-{synopt :{opt modelcolor}}indicates that particular fixed colors to be used in the graph, such as infected is red, regardless of the current Stata graphing settings.{p_end}
+{synopt :{opt colormodel}}indicates that particular fixed colors to be used in the graph, such as infected is red, regardless of the current Stata graphing settings.{p_end}
 
 {syntab :Y axis, X axis, Titles, Legend, Overall, By}
 {synopt :{it:twoway_options}}any of the options documented in 

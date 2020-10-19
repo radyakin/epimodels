@@ -45,18 +45,5 @@ See:
 {help epi_seir} for the instructions to the SEIR model simulation
 {p_end}
 
-{title:Authors}
+INCLUDE help epimodels_footer
 
-{phang}
-{it:Sergiy Radyakin}, The World Bank
-{p_end}
-
-{phang}
-{it:Paolo Verme}, The World Bank
-{p_end}
-
-{title:Also see}
-
-{psee}
-Online: {browse "http://www.radyakin.org/stata/epimodels/": epimodels homepage}
-{p_end}

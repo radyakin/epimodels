@@ -259,19 +259,5 @@ namely: {it:beta}, {it:gamma}, {it:sigma}, by improving on the starting
 value of (0.5, 0.5, 0.5) by fitting two series (infected and recovered 
 populations).{p_end}
 
+INCLUDE help epimodels_footer
 
-{title:Authors}
-
-{phang}
-{it:Sergiy Radyakin}, The World Bank
-{p_end}
-
-{phang}
-{it:Paolo Verme}, The World Bank
-{p_end}
-
-{title:Also see}
-
-{psee}
-Online: {browse "http://www.radyakin.org/stata/epimodels/": epimodels homepage}
-{p_end}
