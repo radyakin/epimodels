@@ -27,6 +27,7 @@ f epimodels.sthlp
 f epimodels_fit.sthlp
 f epimodels_common_options.ihlp
 f epimodels_common_output.ihlp
+f epimodels_footer.ihlp
 * MODEL SIR-specific
 f epi_sir.ado
 f epi_sir.dlg
@@ -42,4 +43,6 @@ f epi_siz.ado
 f epi_siz.dlg
 f epi_siz.sthlp
 * f epi_fit_siz.dlg - not implemented
+f epimodels_eq_siz.png
+f epimodels_sch_siz.png
 * END OF FILE

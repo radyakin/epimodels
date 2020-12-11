@@ -323,4 +323,29 @@ program define popmatrix, rclass
 	return local N=_N
 end
 
+program define popmatrixfile, rclass
+    version 16.0
+	
+	syntax , datafile(string) [*]
+	
+	frame pwf
+	local cf `"`r(currentframe)'"'
+	
+	tempname tframe
+	frame create `tframe'
+	frame change `tframe'
+	
+    use `"`datafile'"'
+	
+	epimodels_util popmatrix , `options'
+
+	tempname tmpm
+	matrix `tmpm'=r(F)
+	return matrix F=`tmpm'
+	return scalar popsize=_N
+	clear
+	frame change `cf'
+	frame drop `tframe'	
+end
+
 // END OF FILE
